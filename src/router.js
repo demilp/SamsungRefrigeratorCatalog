@@ -46,7 +46,7 @@ export default new Router({
       path: "/comparison/:id",
       name: "comparison",
       component: Comparison
-    },
+    }
     /*{
       path: "/about",
       name: "about",

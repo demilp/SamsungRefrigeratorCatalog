@@ -5,16 +5,16 @@ import ContentfulVue from "contentful-vue";
 
 Vue.config.productionTip = false;
 Vue.use(ContentfulVue, {
-  space: "",
-  accessToken: ""
+  space: "5wam72y7e73r",
+  accessToken:
+    "6fd8c9605458c039f18d3fc206204dc0c71b192ee61d49d8968f8f353d75cda9"
 });
 
 const content = {
   products: null,
-  technologies: null,
-  
-}
-content.install = function(){
+  technologies: null
+};
+content.install = function() {
   Object.defineProperty(Vue.prototype, "$content", {
     get() {
       return content;

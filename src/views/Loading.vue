@@ -1,5 +1,6 @@
 <template>
   <div>
+    Loading
   </div>
 </template>
 
@@ -7,48 +8,39 @@
 export default {
   name: "Loading",
   data: function() {
-    return{};
+    return {};
   },
-  methods:{
-    LoadProducts (){
-      this.$contentful
-        .getEntries({content_type: 'product'})
-        .then(res=>{
-            this.$content.products = res.items;
-            if(this.$content.technologies !== null && this.$content.products !== null){
-              this.$router.push({path: 'wait'});
-            }
+  methods: {
+    Load() {
+      this.$http.get('assets/content/data.json')
+      .then(function (res) {
+        console.log(res);        
+      });
+        /*.getEntries()
+        .then(res => {
+          this.$content.products = res.items.filter(
+            i => i.sys.contentType.sys.id == "product"
+          );
+          this.$content.technologies = res.items.filter(
+            i => i.sys.contentType.sys.id == "technology"
+          );
+          this.$router.push({ path: "wait" });
         })
-        .catch(()=>{});
-    },
-    LoadTechnologies(){
-      this.$contentful
-        .getEntries({content_type: 'technology'})
-        .then(res=>{
-            this.$content.technologies = res.items;
-            if(this.$content.technologies !== null && this.$content.products !== null){
-              this.$router.push({path: 'wait'});
-            }
-        })
-        .catch(()=>{});
+        .catch(() => {});*/
     }
   },
-  mounted: function(){
-    if(this.$content.technologies !== null && this.$content.products !== null){
-      this.$router.push({path: 'wait'});
-    }else{
-      if(this.$content.technologies == null){
-        this.LoadTechnologies();
-      }
-      if(this.$content.products == null){
-        this.LoadProducts();
-      }
+  mounted: function() {
+    if (
+      this.$content.technologies !== null &&
+      this.$content.products !== null
+    ) {
+      this.$router.push({ path: "wait" });
+    } else {
+      this.Load();
     }
   }
 };
 </script>
 
 <style scoped>
-  
 </style>
-
