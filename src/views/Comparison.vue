@@ -104,7 +104,7 @@ export default {
       this.products.map(function(o) {
         return o.fields.width;
       })
-    );
+    );    
 
     this.$root.$emit("setheader", {
       page: "comparison",

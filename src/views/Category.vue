@@ -61,7 +61,14 @@ export default {
         return o.fields.height;
       })
     );
-    
+    // eslint-disable-next-line
+    console.log('aspecnt', aspect);    
+    // eslint-disable-next-line
+    console.log('max aspect:', maxAspect);
+    // eslint-disable-next-line
+    console.log('height:', this.maxHeight);
+    // eslint-disable-next-line
+    console.log('width:', this.maxWidth);
 
     if (this.products.length == 1) {
       this.$router.push({ path: "/product/" + this.products[0].fields.model });
