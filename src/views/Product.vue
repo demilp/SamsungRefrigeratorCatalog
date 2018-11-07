@@ -1,85 +1,107 @@
 <template>
-    <div class="product">
-        <div class="top">
-            <div class="top-left">
-                <div>
-                    <img v-if="product.fields.technology=='twincooling'"  src=""  @click="popup='digitalinverter'"> 
-                </div>
-                <div>
-                    <img src="" @click="popup='digitalinverter'">
-                </div>
-                <div>
-                    <img src="">
-                    <span>{{product.fields.capacity}} Litros</span>
-                </div>
+  <div class="product">
+      <div class="top">
+          <div class="top-left">
+            <div class="top-left-part">
+              <img v-if="product.fields.technology=='twincooling'"  src="@/assets/product/logo_twin_cooling.png"  @click="popup('twincooling')"> 
+            </div>
+            <div class="top-left-part">
+              <hr>
+              <img src="@/assets/product/logo_digital_inverter.png" @click="popup('digitalinverter')">              
+            </div>
+            <div class="top-left-part">
+              <hr>
+              <img src="@/assets/product/icono_capacidad.png">
+              <span>{{product.fields.capacity}} Litros</span>
+            </div>
             </div>
             <div class="top-center">
-                <img :src="currentImage.fields.file.url">
+              <img class="current-image" :src="'content/'+currentImage.fields.file.url">
             </div>
-            <div class="top-right">
-                <router-link :to="'/comparison/'+product.fields.model" tag="div">
-                    <img src="">
-                    Compare
-                </router-link>
-                <!--<Slider direction="vertical" :pagination-visible="false">
-                    <div v-for="im in product.fields.images" :key="im.sys.id">
-                        <img :src="im.fields.file.url" @click="currentImage = im">
-                    </div>
-                </Slider>-->
-                <carousel :navigationEnabled="true" class="images-carousel">
-                    <slide v-for="im in product.fields.images" :key="im.sys.id">
-                        <img :src="im.fields.file.url" @click="currentImage = im">
-                    </slide>
-                </carousel>
-            </div>
+          <div class="top-right">
+            <router-link :to="'/comparison/'+product.fields.model" tag="div" class="compare">
+              <img src="@/assets/product/icono_comparar.png">
+              <span>COMPARAR</span>
+              <span>PRODUCTOS</span>
+            </router-link>
+              <div class="slick-container">
+                <div class="slick-arrow" @click="()=>{this.$refs.slick.prev()}">▲</div>
+                <slick ref="slick" :options="{slidesToShow:2, vertical:true, verticalSwiping:true, infinite:false, arrows:false}">
+                  <div v-for="im in product.fields.images" :key="im.sys.id" class="product-image-container">
+                    <img :src="'content/'+im.fields.file.url" @click="currentImage=im" class="product-image">
+                    <hr>
+                  </div>
+                </slick>
+                <div class="slick-arrow" @click="()=>{this.$refs.slick.next()}">▼</div>
+              </div>
+          </div>
         </div>
         <div class="bottom">
+          <div class="product-information">
+            <span class="model-text">MODELO</span>
+            <span class="product-model">{{product.fields.model}}</span>
             <ul>
-                <li class="description">Ancho {{product.fields.width}}mm - Profundidad {{product.fields.depth}}mm - Altura {{product.fields.height}}mm</li>
-                <li v-for="line in product.fields.description" :key="line" class="description">{{line}}</li>
+              <li class="description"><span>Ancho {{product.fields.width}}mm - Profundidad {{product.fields.depth}}mm - Altura {{product.fields.height}}mm</span></li>
+              <li v-for="line in product.fields.description" :key="line" class="description"><span>{{line}}</span></li>
             </ul>
-           <carousel :navigationEnabled="true" :perPage=7>
-                <slide v-for="p in products" :key="p.sys.id">
-                    <router-link v-if="p.fields.mainImage" :to="'/product/'+p.fields.model" tag="div" class="other-product">
-                        <img :src="p.fields.mainImage.fields.file.url">
-                    </router-link>
-                </slide>
+          </div>
+          <div class="carousel-other-products-container">
+            <carousel :navigationEnabled="true" :perPage=7 class="carousel-other-products" :paginationEnabled="false" v-bind:class="{ centered: products.length < 7 }">
+              <slide v-for="p in products" :key="p.sys.id">
+                <router-link v-if="p.fields.mainImage" :to="'/product/'+p.fields.model" tag="div" class="other-product-container">
+                  <img :src="'content/'+p.fields.mainImage.fields.file.url" class="other-product">
+                </router-link>
+              </slide>
             </carousel>
+          </div>
         </div>
-        <div class="popup" v-if="popupContent != ''">
-            <carousel>
-                <slide>
-                    
+        <div class="popup" v-if="videos.length > 0">
+          <div class="popup-content">
+            <img v-if="techLogo=='twincooling'" src="@/assets/product/logos_tecnologias_pop_up_twin_coolong.png">
+            <img v-else src="@/assets/product/logos_tecnologias_pop_up_digital_inverter.png">
+            <div class="popup-carousel-container">
+              <carousel :navigationEnabled="true" :perPage=4 :paginationEnabled="false" class="popup-carousel" v-bind:class="{ centered: videos.length < 4 }">
+                <slide v-for="(video, index) in videos" :key="video.thumbnail">
+                  <div v-if="currentVideoIndex==index" class="thumb-selector"></div>
+                  <img :src="'content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
+                  <img src="@/assets/product/thumbnails_video_play.png" @click="playVideo(index)" class="thumb-videoicon">
                 </slide>
-            </carousel>
+              </carousel>
+            </div>
+            <video :src="'content/'+videos[currentVideoIndex].video" class="popup-video" autoplay loop muted></video>
+            <span class="close-btn" @click="closePopup">X</span>
+          </div>            
         </div>
     </div>
 </template>
 
 <script>
 import { Carousel, Slide } from "vue-carousel";
-import Slider from 'vue-plain-slider'
+import Slick from "vue-slick";
 export default {
   name: "Product",
   components: {
     Carousel,
     Slide,
-    Slider
+    Slick
   },
   data: function() {
     return {
       product: {},
       products: [],
       currentImage: "",
-      popupContent: ""
+      popupContent: "",
+      videos: [],
+      techLogo: "",
+      currentVideoIndex: 0
     };
   },
   methods: {
     load: function() {
-      this.product = this.$content.products.find(
+      this.product = this.$content.product.find(
         p => p.fields.model == this.$route.params.id
       );
-      this.products = this.$content.products.filter(
+      this.products = this.$content.product.filter(
         p => p.fields.style == this.product.fields.style
       );
       if (this.product.fields.images)
@@ -92,40 +114,288 @@ export default {
     },
     changeCurrentImage: function(i) {
       this.currentImage = i;
+    },
+    popup: function(tec) {
+      this.$session.push(this.$route.path + "/" + tec);
+      let t = this.$content.technology.find(t => t.fields.name === tec);
+      this.videos = t.fields.videos.map(v => {
+        return {
+          video: v.fields.video.fields.file.url,
+          thumbnail: v.fields.thumb.fields.file.url
+        };
+      });
+      this.techLogo = tec;
+      if (tec == "twincooling") {
+        this.techLogo =
+          "/assets/product/logos_tecnologias_pop_up_twin_coolong.png";
+      } else {
+        this.techLogo =
+          "/assets/product/logos_tecnologias_pop_up_digital_inverter.png";
+      }
+      this.playVideo(0);
+    },
+    closePopup: function() {
+      this.videos = [];
+    },
+    playVideo: function(i) {
+      this.currentVideoIndex = i;
     }
   },
   beforeMount() {
     this.load();
+    this.$nextTick(() => {
+      this.$refs.slick.goTo(0, true);
+    });
   },
   watch: {
     "$route.params.id": function() {
       this.load();
+      this.$refs.slick.destroy();
+      this.$nextTick(() => {
+        this.$refs.slick.create();
+        this.$refs.slick.goTo(0, true);
+      });
     }
   }
 };
 </script>
     
 <style scoped>
-.product{
-    width: 90%;
+.product {
 }
-.top{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+/deep/ .centered .VueCarousel-inner {
+  justify-content: center;
 }
-.top-left{
-    width: 33.33%;
+.popup {
+  position: absolute;
+  display: flex;
+  padding-top: 350px;
+  z-index: 2;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0009;
 }
-.top-center{
-    width: 33.33%;
+.popup-content {
+  width: 100%;
+  height: 800px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px 0;
+  position: relative;
 }
-.top-right{
-    width: 33.33%;
+.popup-carousel-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 25px 0;
+  position: relative;
 }
-.images-carousel{
-    width: 100%;
+.popup-carousel-container::after {
+  content: "";
+  background-color: #0378be;
+  width: 100%;
+  position: absolute;
+  top: 7.5%;
+  height: 100px;
+  z-index: 0;
+}
+.popup-carousel {
+  width: 85%;
+  z-index: 1;
+}
+/deep/ .VueCarousel-slide {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important;
+}
+.thumb {
+  width: 90%;
+  height: auto;
+  z-index: 1;
+}
+.thumb-selector {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #ecedef;
+  z-index: 0;
+}
+.thumb-videoicon {
+  position: absolute;
+  width: 90%;
+  height: auto;
+  z-index: 2;
+}
+.popup-video {
+  max-width: 85%;
+  max-height: 85%;
+}
+.close-btn {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  color: #0378bd;
+  font-size: 5em;
+  font-family: samsung-bold;
+}
+.top {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 600px;
+  width: 100%;
+  background-color: #e7e7e9;
+  margin-top: 300px;
+}
+.top::after,
+.top::before {
+  position: absolute;
+  content: "";
+  background-color: #babbc0;
+  width: 100%;
+  z-index: 0;
+}
+.top::before {
+  height: 20px;
+  top: 0;
+}
+.top::after {
+  height: 60px;
+  bottom: 0;
+}
+.top-left {
+  z-index: 1;
+  width: 30%;
+  padding: 20px 140px 60px 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+  box-sizing: border-box;
+}
+.top-left-part {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+.top-left-part > hr {
+  position: absolute;
+  background-color: black;
+  width: 150px;
+  height: 1px;
+  border: 0;
+  top: -25px;
+  align-self: flex-start;
+}
 
+.top-left-part:nth-child(3) {
+  align-items: center;
+  justify-content: space-around;
+}
+.top-center {
+  z-index: 1;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.current-image {
+  width: auto;
+  max-width: 100%;
+  max-height: auto;
+  margin-bottom: 20px;
+}
+.top-right {
+  z-index: 1;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -25px;
+}
+.compare {
+  position: absolute;
+  top: -200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.compare > span {
+  text-align: center;
+}
+.compare > span:first-of-type {
+  color: #0086ca;
+}
+.slick-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.slick-arrow {
+  color: #0378be;
+  font-size: 3em;
+}
+.product-image-container {
+  height: 175px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+}
+.product-image {
+  height: 100%;
+  width: auto;
+}
+.product-image + hr {
+  width: 100%;
+  height: 1px;
+  background-color: #babbc0;
+  bottom: 0;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+}
+.product-information {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.model-text {
+  font-size: 1.2em;
+}
+.product-model {
+  font-family: samsung-bold;
+  font-size: 3em;
+}
+ul {
+  padding: 0;
+}
+.description {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  vertical-align: middle;
+  font-family: samsung-medium;
+  list-style: none;
+  height: 30px;
+}
+.description::before {
+  color: #0184ca;
+  content: "\2022";
+  font-size: 2.5em;
+  padding-right: 0.2em;
+  padding-left: 0.2em;
 }
 .description:nth-child(odd) {
   background: #ccc;
@@ -133,8 +403,148 @@ export default {
 .description:nth-child(even) {
   background: #fff;
 }
+.carousel-other-products-container {
+  height: 150px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.carousel-other-products-container::after {
+  content: "";
+  background-color: #0378be;
+  width: 100%;
+  position: absolute;
+  top: 25%;
+  height: 100px;
+  z-index: 0;
+}
+.carousel-other-products {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 85%;
+  z-index: 1;
+}
+/deep/ .carousel-other-products .VueCarousel-navigation-button {
+  color: white !important;
+  font-size: 4em !important;
+  top: 55% !important;
+}
+/deep/ .popup-carousel .VueCarousel-navigation-button {
+  color: white !important;
+  font-size: 4em !important;
+  top: 50% !important;
+}
+.other-product-container {
+  height: 150px;
+}
 
-.other-product{
-    height: 25px;
+.other-product {
+  height: 100%;
+}
+
+/deep/ .slick-slider {
+  position: relative;
+
+  display: block;
+  box-sizing: border-box;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/deep/ .slick-list {
+  position: relative;
+
+  display: block;
+  overflow: hidden;
+
+  margin: 0;
+  padding: 0;
+}
+/deep/ .slick-list:focus {
+  outline: none;
+}
+/deep/ .slick-list.dragging {
+  cursor: pointer;
+  cursor: hand;
+}
+
+/deep/ .slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/deep/ .slick-track {
+  position: relative;
+  top: 0;
+  left: 0;
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+/deep/ .slick-track:before,
+.slick-track:after {
+  display: table;
+
+  content: "";
+}
+/deep/ .slick-track:after {
+  clear: both;
+}
+/deep/ .slick-loading .slick-track {
+  visibility: hidden;
+}
+
+/deep/ .slick-slide {
+  display: none;
+  float: left;
+
+  height: 100%;
+  min-height: 1px;
+}
+/deep/ [dir="rtl"] .slick-slide {
+  float: right;
+}
+/deep/ .slick-slide img {
+  display: block;
+}
+/deep/ .slick-slide.slick-loading img {
+  display: none;
+}
+/deep/ .slick-slide.dragging img {
+  pointer-events: none;
+}
+/deep/ .slick-initialized .slick-slide {
+  display: block;
+}
+/deep/ .slick-loading .slick-slide {
+  visibility: hidden;
+}
+/deep/ .slick-vertical .slick-slide {
+  display: flex;
+
+  height: auto;
+
+  border: 1px solid transparent;
+  justify-content: center;
+}
+/deep/ .slick-arrow.slick-hidden {
+  display: none;
 }
 </style>

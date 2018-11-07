@@ -1,6 +1,6 @@
 <template>
   <div>
-    Loading
+    Cargando...
   </div>
 </template>
 
@@ -12,29 +12,22 @@ export default {
   },
   methods: {
     Load() {
-      this.$http.get('assets/content/data.json')
-      .then(function (res) {
-        console.log(res);        
-      });
-        /*.getEntries()
-        .then(res => {
-          this.$content.products = res.items.filter(
-            i => i.sys.contentType.sys.id == "product"
-          );
-          this.$content.technologies = res.items.filter(
-            i => i.sys.contentType.sys.id == "technology"
-          );
-          this.$router.push({ path: "wait" });
+      this.$http
+        .get("content/data.json")
+        .then(function(res) {
+          this.$content = res.body;
+          this.$router.push({ path: "/wait" });
         })
-        .catch(() => {});*/
+        .catch(() => {});
     }
   },
   mounted: function() {
     if (
-      this.$content.technologies !== null &&
-      this.$content.products !== null
+      this.$content.technology !== null &&
+      this.$content.product !== null &&
+      this.$content.video !== null
     ) {
-      this.$router.push({ path: "wait" });
+      this.$router.push({ path: "/wait" });
     } else {
       this.Load();
     }
@@ -43,4 +36,7 @@ export default {
 </script>
 
 <style scoped>
+div {
+  font-size: 5em;
+}
 </style>

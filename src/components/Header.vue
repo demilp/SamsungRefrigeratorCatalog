@@ -57,9 +57,21 @@ export default {
         this.routes.push(j);
         var p = { route: "/product/" + message.id, text: message.id };
         this.routes.push(p);
-        if(message.page == "comparison"){
-          this.routes.push({ route: "/comparison/" + message.id, text: 'COMPARACÍON' });
+        if (message.page == "comparison") {
+          this.routes.push({
+            route: "/comparison/" + message.id,
+            text: "COMPARACÍON"
+          });
         }
+      } else if (message.page == "technology") {
+        var t = "";
+        if (message.id == "twincooling") {
+          t = "TWIN COOLING";
+        } else {
+          t = "DIGITAL INVERTER";
+        }
+        var tec = { route: "/technology/" + message.id, text: t };
+        this.routes.push(tec);
       }
     });
   }

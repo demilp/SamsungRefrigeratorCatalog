@@ -6,18 +6,18 @@
       </div>
       <div>
         <ul>
-          <li> <router-link to="/category/topfreezer" tag="div" class="category"><img src="" alt="">Freezer<br>Superior</router-link></li>
-          <li> <router-link to="/category/bottomfreezer" tag="div" class="category"><img src="" alt="">Freezer<br>Inferior</router-link></li>
-          <li> <router-link to="/category/sidebyside" tag="div" class="category"><img src="" alt="">Side by<br>Side</router-link></li>
-          <li> <router-link to="/category/frenchdoor" tag="div" class="category"><img src="" alt="">French<br>Door</router-link></li>
+          <router-link to="/category/topfreezer" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_freezer_superior.png" alt=""><span class="category-text">Freezer<br>Superior</span></router-link>
+          <router-link to="/category/bottomfreezer" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_freezer_inferior.png" alt=""><span class="category-text">Freezer<br>Inferior</span></router-link>
+          <router-link to="/category/sidebyside" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_Side_by_Side.png" alt=""><span class="category-text">Side by<br>Side</span></router-link>
+          <router-link to="/category/frenchdoor" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_French_Door.png" alt=""><span class="category-text">French<br>Door</span></router-link>
         </ul>
       </div>
     </div>
     <div class="bottom">  
-      <span class="bottom-text">Conoce más sobre nustras<br>principales tecnologías</span>
+      <h2 class="bottom-text">Conoce más sobre nustras<br>principales tecnologías</h2>
       <div class="bottom-technologies">
-        <router-link to="/technology/tweencooling" tag="div" class="bottom-technology"><img src=""><hr><span>SISTEMA DE REFRIGERECIÓN INDEPENDIENTE</span></router-link>
-        <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology"><img src=""><hr><span>MAYOR AHORRO DE ENERGÍA</span></router-link>
+        <router-link to="/technology/twincooling" tag="div" class="bottom-technology"><img src="@/assets/home/logos_tecnologias_twin_cooling.png"><hr><span class="technology-text">SISTEMA DE REFRIGERECIÓN<br>INDEPENDIENTE</span></router-link>
+        <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology"><img src="@/assets/home/logos_tecnologias_digital_inverter.png"><hr><span class="technology-text">MAYOR AHORRO DE ENERGÍA</span></router-link>
       </div>      
     </div>
   </div>
@@ -28,6 +28,11 @@ export default {
   name: "Home",
   data() {
     return {};
+  },
+  methods: {
+    playVideo: function(i) {
+      this.currentVideoIndex = i;
+    }
   }
 };
 </script>
@@ -45,33 +50,59 @@ export default {
 }
 h1 {
   margin-top: 155px;
+  font-size: 3.2em;
+  margin-bottom: 200px;
 }
 ul {
+  padding: 0 100px 0 100px;
   list-style: none;
   display: flex;
   justify-content: space-around;
 }
-.category {
+li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.category-text {
+  margin-top: 15px;
   color: #1bd4ff;
   font-family: samsung-bold;
 }
-
 .bottom {
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: #e7e7e9;
   height: 918px;
+  justify-content: flex-start;
+  padding-top: 60px;
+  height: 750px;
+}
+h2 {
+  font-size: 3em;
+  font-family: samsung-bold;
 }
 .bottom-technologies {
   display: flex;
+  margin-top: 100px;
   flex-direction: row;
   justify-content: space-around;
 }
 .bottom-technology {
-  width: 445px;
+  width: 405px;
 }
-.bottom-text {
-  font-family: samsung-bold;
+.bottom-technology > img {
+  position: relative;
+}
+hr {
+  width: 100%;
+  background-color: black;
+  border: none;
+  height: 1px;
+  margin: 20px 0 20px 0;
+}
+.technology-text {
+  font-size: 1.25em;
 }
 </style>

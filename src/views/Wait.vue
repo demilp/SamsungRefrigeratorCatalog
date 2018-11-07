@@ -1,8 +1,7 @@
 <template>
   <div class="wait">
     <router-link to="/home" tag="div">
-      <video src="@/assets/c2a.mp4" autoplay loop muted>
-
+      <video src="@/assets/wait/c2a.mp4" autoplay loop muted>
       </video>
     </router-link>
   </div>

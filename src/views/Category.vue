@@ -1,18 +1,20 @@
 <template>
-    <div class="category">
-        <carousel :navigationEnabled="true" :paginationEnabled="false" :perPage=3 class="carousel">
-            <slide v-for="product in products" :key="product.sys.id">
-                <router-link :to="'/product/'+product.fields.model" tag="div" class="product">
-                    <span>{{product.fields.technology}}</span>
-                    <div class="product-image-container">
-                      <img class="product-image" v-if="product.fields.mainImage" :src="'http:'+product.fields.mainImage.fields.file.url">
-                    </div>
-                    <span class="product-model">{{product.fields.model}}</span>
-                    <span class="product-capacity">{{product.fields.capacity}} Lts.</span> 
-                </router-link>                
-            </slide>
-        </carousel>
-    </div>
+  <div class="category">
+    <carousel :navigationEnabled="true" :paginationEnabled="false" :perPage=3 class="carousel" v-bind:class="{ centered: products.length < 3 }">
+      <slide v-for="product in products" :key="product.sys.id" class="product-container">
+        <router-link :to="'/product/'+product.fields.model" tag="div" class="product">
+          <div class="logo-container">
+            <img v-if="product.fields.technology=='twincooling'" src="@/assets/category/categoria_logo_twin_cooling.png">
+          </div>
+          <div class="product-image-container">
+            <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url" v-bind:style="{ height: useHeight?(700*(product.fields.height/maxHeight))+'px':'auto',  width: !useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'}">
+          </div>
+          <span class="product-model">{{product.fields.model}}</span>
+          <span class="product-capacity">{{product.fields.capacity}} Lts.</span> 
+        </router-link>                
+      </slide>
+    </carousel>
+  </div>
 </template>
 
 <script>
@@ -25,13 +27,45 @@ export default {
   },
   data: function() {
     return {
-      products: []
+      products: [],
+      maxWidth: 0,
+      maxHeight: 0,
+      useHeight: true
     };
   },
   beforeMount() {
-    this.products = this.$content.products.filter(
+    this.products = this.$content.product.filter(
       p => p.fields.style == this.$route.params.id
     );
+    let aspect = 240/700;
+    let maxAspect = Math.max.apply(
+      Math,
+      this.products.map(function(o) {
+        return o.fields.width/o.fields.height;
+      })
+    );
+    if(maxAspect > aspect){
+      this.useHeight = false;
+    }else{
+      this.useHeight = true;
+    }
+    this.maxWidth = Math.max.apply(
+      Math,
+      this.products.map(function(o) {
+        return o.fields.width;
+      })
+    );
+    this.maxHeight = Math.max.apply(
+      Math,
+      this.products.map(function(o) {
+        return o.fields.height;
+      })
+    );
+    
+
+    if (this.products.length == 1) {
+      this.$router.push({ path: "/product/" + this.products[0].fields.model });
+    }
     this.$root.$emit("setheader", {
       page: "category",
       id: this.$route.params.id
@@ -52,32 +86,45 @@ export default {
   margin-top: -400px;
 }
 /deep/ .VueCarousel-navigation-button {
-  color: #0179bd;
-  font-size: 5em;
-  top: 35%;
+  color: #0179bd !important;
+  font-size: 5em !important;
+  top: 35% !important;
 }
-.product{
+/deep/ .centered .VueCarousel-inner {
+  justify-content: center;
+}
+.product-container {
+  display: flex;
+  justify-content: center;
+}
+.product {
   width: 240px;
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
-.product-image-container{
+.product-image-container {
   height: 700px;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
 }
-.product-image{
-  width: 100%;
-  height: auto;
+.product-image {
+  /*width: 100%;*/
+  /*height: auto;*/
+  width: auto;
 }
-
-.product-model{
+.product-model {
   font-family: samsung-bold;
   font-size: 38px;
 }
-.product-capacity{
+.product-capacity {
   font-family: samsung-regular;
   font-size: 30px;
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  height: 32px;
 }
 </style>
