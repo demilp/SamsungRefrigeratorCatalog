@@ -16,7 +16,9 @@
             </div>
             </div>
             <div class="top-center">
-              <img class="current-image" :src="'content/'+currentImage.fields.file.url">
+              <div class="current-image-container">
+                <img class="current-image" :src="'content/'+currentImage.fields.file.url">
+              </div>              
             </div>
           <div class="top-right">
             <router-link :to="'/comparison/'+product.fields.model" tag="div" class="compare">
@@ -68,7 +70,7 @@
                 </slide>
               </carousel>
             </div>
-            <video :src="'content/'+videos[currentVideoIndex].video" class="popup-video" autoplay loop muted></video>
+            <video ref="video" :src="'content/'+videos[currentVideoIndex].video" class="popup-video" autoplay></video>
             <span class="close-btn" @click="closePopup">X</span>
           </div>            
         </div>
@@ -116,7 +118,10 @@ export default {
       this.currentImage = i;
     },
     popup: function(tec) {
-      this.$session.push(this.$route.path + "/" + tec);
+      this.$session.events.push({
+        path: this.$route.path + "/" + tec,
+        dateTime: new Date()
+      });
       let t = this.$content.technology.find(t => t.fields.name === tec);
       this.videos = t.fields.videos.map(v => {
         return {
@@ -133,12 +138,21 @@ export default {
           "/assets/product/logos_tecnologias_pop_up_digital_inverter.png";
       }
       this.playVideo(0);
+      this.$nextTick(() => {
+        this.$refs.video.onended = () => {
+          this.$timeout.start(30000);
+        };
+      });
     },
     closePopup: function() {
       this.videos = [];
     },
     playVideo: function(i) {
       this.currentVideoIndex = i;
+      this.$nextTick(() => {
+        this.$timeout.stop();
+        this.$refs.video.play();
+      });
     }
   },
   beforeMount() {
@@ -306,6 +320,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  margin-top: -175px;
+}
+.current-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 .current-image {
   width: auto;

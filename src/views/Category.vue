@@ -7,7 +7,7 @@
             <img v-if="product.fields.technology=='twincooling'" src="@/assets/category/categoria_logo_twin_cooling.png">
           </div>
           <div class="product-image-container">
-            <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url" v-bind:style="{ height: useHeight?(700*(product.fields.height/maxHeight))+'px':'auto',  width: !useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'}">
+            <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url" v-bind:style="{ height: useHeight?(600*(product.fields.height/maxHeight))+'px':'auto',  width: !useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'}">
           </div>
           <span class="product-model">{{product.fields.model}}</span>
           <span class="product-capacity">{{product.fields.capacity}} Lts.</span> 
@@ -37,16 +37,16 @@ export default {
     this.products = this.$content.product.filter(
       p => p.fields.style == this.$route.params.id
     );
-    let aspect = 240/700;
+    let aspect = 240 / 600;
     let maxAspect = Math.max.apply(
       Math,
       this.products.map(function(o) {
-        return o.fields.width/o.fields.height;
+        return o.fields.width / o.fields.height;
       })
     );
-    if(maxAspect > aspect){
+    if (maxAspect > aspect) {
       this.useHeight = false;
-    }else{
+    } else {
       this.useHeight = true;
     }
     this.maxWidth = Math.max.apply(
@@ -61,14 +61,6 @@ export default {
         return o.fields.height;
       })
     );
-    // eslint-disable-next-line
-    console.log('aspecnt', aspect);    
-    // eslint-disable-next-line
-    console.log('max aspect:', maxAspect);
-    // eslint-disable-next-line
-    console.log('height:', this.maxHeight);
-    // eslint-disable-next-line
-    console.log('width:', this.maxWidth);
 
     if (this.products.length == 1) {
       this.$router.push({ path: "/product/" + this.products[0].fields.model });
@@ -111,7 +103,7 @@ export default {
   flex-direction: column;
 }
 .product-image-container {
-  height: 700px;
+  height: 600px;
   display: flex;
   align-items: flex-end;
   justify-content: center;

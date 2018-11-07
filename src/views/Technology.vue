@@ -5,11 +5,12 @@
         <slide v-for="(video, index) in videos" :key="video.thumbnail">
           <div v-if="currentVideoIndex==index" class="thumb-selector"></div>
           <img :src="'content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
+          <img src="@/assets/product/thumbnails_video_play.png" @click="playVideo(index)" class="thumb-videoicon">
         </slide>
       </carousel>
     </div>
     <div class="video-container">
-      <video :src="'content/'+videos[currentVideoIndex].video" class="video" autoplay loop muted></video>
+      <video ref="video" :src="'content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
     </div>
     <router-link class="close-btn" to="/home" tag="span">X</router-link>
   </div>
@@ -48,6 +49,11 @@ export default {
       this.techLogo = "http://placehold.it/620x120";
     }
     this.playVideo(0);
+    this.$nextTick(() => {
+      this.$refs.video.onended = () => {
+        this.$timeout.start(30000);
+      };
+    });
     this.$root.$emit("setheader", {
       page: "technology",
       id: this.$route.params.id
@@ -56,6 +62,10 @@ export default {
   methods: {
     playVideo: function(i) {
       this.currentVideoIndex = i;
+      this.$nextTick(() => {
+        this.$timeout.stop();
+        this.$refs.video.play();
+      });
     }
   }
 };
@@ -112,6 +122,12 @@ export default {
   height: 100%;
   background-color: #ecedef;
   z-index: 0;
+}
+.thumb-videoicon {
+  position: absolute;
+  width: 90%;
+  height: auto;
+  z-index: 2;
 }
 .video {
   width: 90%;

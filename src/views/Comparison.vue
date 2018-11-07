@@ -87,16 +87,16 @@ export default {
       p => p.fields.style == this.product.fields.style
     );
 
-    let aspect = 250/700;
+    let aspect = 250 / 700;
     let maxAspect = Math.max.apply(
       Math,
       this.products.map(function(o) {
-        return o.fields.width/o.fields.height;
+        return o.fields.width / o.fields.height;
       })
     );
-    if(maxAspect > aspect){
+    if (maxAspect > aspect) {
       this.useHeight = false;
-    }else{
+    } else {
       this.useHeight = true;
     }
     this.maxWidth = Math.max.apply(
@@ -104,7 +104,7 @@ export default {
       this.products.map(function(o) {
         return o.fields.width;
       })
-    );    
+    );
 
     this.$root.$emit("setheader", {
       page: "comparison",

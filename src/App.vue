@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-  <!--<div id="app" @click="resetTimeout" @drag="resetTimeout">-->
+  <!--<div id="app">-->
+  <div id="app" class="unselectable" @click="resetTimeout" @drag="resetTimeout">
     <Header v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
     <router-view/>
   </div>
@@ -14,24 +14,24 @@ export default {
     Header
   },
   data: function() {
-    return {
-      timeout: setTimeout(() => {
-        this.logSession();
-        this.$router.push({ path: "/wait" });
-      }, 30000)
+    return {};
+  },
+  beforeMount: function() {
+    this.$session = { events: [], id: this.guid(), dateTime: new Date() };
+    this.$timeout.callback = () => {
+      this.logSession();
+      this.$router.push({ path: "/wait" });
     };
+    this.$timeout.start(30000);
   },
   methods: {
     resetTimeout: function() {
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        this.logSession();
-        this.$router.push({ path: "/wait" });
-      }, 30000);
+      this.$timeout.stop();
+      this.$timeout.start(30000);
     },
     logSession: function() {
       let session = JSON.stringify(this.$session);
-      this.$session = [];
+      this.$session = { events: [], id: this.guid(), dateTime: new Date() };
       try {
         this.$http.post(
           "http://localhost:9501/DexClient/json/metadata?op=AppBusinessEventApi",
@@ -49,11 +49,35 @@ export default {
       }catch(err){
         
       }
+    },
+    guid: function() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return (
+        s4() +
+        s4() +
+        "-" +
+        s4() +
+        "-" +
+        s4() +
+        "-" +
+        s4() +
+        "-" +
+        s4() +
+        s4() +
+        s4()
+      );
     }
   },
   watch: {
     "$route.path": function() {
-      this.$session.push(this.$route.path);
+      this.$session.events.push({
+        path: this.$route.path,
+        dataTime: new Date()
+      });
     }
   }
 };
@@ -70,6 +94,14 @@ body {
   height: 1920px;
   font-family: samsung-medium;
   overflow: hidden;
+}
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 @font-face {
   font-family: "samsung-bold";
