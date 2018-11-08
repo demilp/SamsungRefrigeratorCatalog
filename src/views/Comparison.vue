@@ -3,7 +3,11 @@
     <div class="container">
       <div class="content">
         <div class="product-image-container">
-          <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url" v-bind:style="{ height: useHeight?(700*(product.fields.height/maxHeight))+'px':'auto',  width: !useHeight?(250*(product.fields.width/maxWidth))+'px':'auto'}">
+          <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url"
+          v-bind:style="{
+            height: product.fields.height/3+'px'/*!wider?(900*(product.fields.height/biggest.fields.height))+'px':'auto'*/, 
+            width: 'auto'/*wider?(250*(product.fields.width/biggest.fields.width))+'px':'auto'*/
+          }">
         </div>
         <span class="product-model">{{product.fields.model}}</span>
         <div class="information-container">
@@ -32,7 +36,11 @@
         <slide class="" v-for="p in products" :key="p.sys.id">
           <div class="content2">
             <div class="product-image-container">
-              <img class="product-image" v-if="p.fields.mainImage" :src="'content/'+p.fields.mainImage.fields.file.url" v-bind:style="{ height: useHeight?(700*(product.fields.height/maxHeight))+'px':'auto',  width: !useHeight?(250*(product.fields.width/maxWidth))+'px':'auto'}">
+              <img class="product-image" v-if="p.fields.mainImage" :src="'content/'+p.fields.mainImage.fields.file.url"
+              v-bind:style="{
+                height: p.fields.height/3+'px'/*!wider?(900*(product.fields.height/biggest.fields.height))+'px':'auto'*/, 
+                width: 'auto'/*wider?(250*(product.fields.width/biggest.fields.width))+'px':'auto'*/
+              }">
             </div>
             <span class="product-model">{{p.fields.model}}</span>
             <div class="information-container">
@@ -74,9 +82,7 @@ export default {
     return {
       product: {},
       products: [],
-      maxWidth: 0,
-      maxHeight: 0,
-      useHeight: true
+
     };
   },
   beforeMount() {
@@ -86,26 +92,7 @@ export default {
     this.products = this.$content.product.filter(
       p => p.fields.style == this.product.fields.style
     );
-
-    let aspect = 250 / 700;
-    let maxAspect = Math.max.apply(
-      Math,
-      this.products.map(function(o) {
-        return o.fields.width / o.fields.height;
-      })
-    );
-    if (maxAspect > aspect) {
-      this.useHeight = false;
-    } else {
-      this.useHeight = true;
-    }
-    this.maxWidth = Math.max.apply(
-      Math,
-      this.products.map(function(o) {
-        return o.fields.width;
-      })
-    );
-
+    
     this.$root.$emit("setheader", {
       page: "comparison",
       id: this.$route.params.id,
@@ -130,13 +117,13 @@ export default {
 }
 .content {
   width: 100%;
-  margin-top: -200px;
+  margin-top: -400px;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 .product-image-container {
-  height: 700px;
+  height: 900px;
   width: 250px;
   display: flex;
   align-items: flex-end;
@@ -203,7 +190,7 @@ export default {
 .close-btn {
   position: absolute;
   right: 75px;
-  top: -400px;
+  top: -500px;
   color: #0378bd;
   font-size: 5em;
   font-family: samsung-bold;

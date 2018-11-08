@@ -1,6 +1,6 @@
 <template>
   <!--<div id="app">-->
-  <div id="app" class="unselectable" @click="resetTimeout" @drag="resetTimeout">
+  <div id="app" class="unselectable" @touchstart="resetTimeout">
     <Header v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
     <router-view/>
   </div>
@@ -32,23 +32,27 @@ export default {
     logSession: function() {
       let session = JSON.stringify(this.$session);
       this.$session = { events: [], id: this.guid(), dateTime: new Date() };
-      try {
+
         this.$http.post(
-          "http://localhost:9501/DexClient/json/metadata?op=AppBusinessEventApi",
+          "http://localhost:9501/DexClient/BusinessEvent",
           {
             ApplicationId: 2,
             SecretAppKey: "4df216bd-9900-4ed7-aba4-37a84259187a",
             EventData: session
+          },{
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-        ); /*.then(res=>{
-
+        ).then(res=>{
+          // eslint-disable-next-line
+          console.log('res', res);
+          
         }, err=>{
-
-        });*/
+          // eslint-disable-next-line
+          console.log('err', err);
+        })
         // eslint-disable-next-line
-      }catch(err){
-        
-      }
     },
     guid: function() {
       function s4() {

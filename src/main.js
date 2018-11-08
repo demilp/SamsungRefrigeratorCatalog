@@ -32,11 +32,15 @@ timeout.install = function(Vue) {
     id: null,
     callback: null,
     start: function(time) {
+      // eslint-disable-next-line
+      //console.log('start');
       this.id = setTimeout(() => {
         if (this.callback != null) this.callback();
       }, time);
     },
     stop: function() {
+      // eslint-disable-next-line
+      //console.log('clear');      
       clearTimeout(this.id);
     }
   };

@@ -7,7 +7,11 @@
             <img v-if="product.fields.technology=='twincooling'" src="@/assets/category/categoria_logo_twin_cooling.png">
           </div>
           <div class="product-image-container">
-            <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url" v-bind:style="{ height: useHeight?(600*(product.fields.height/maxHeight))+'px':'auto',  width: !useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'}">
+            <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url"
+            v-bind:style="{
+              height: 'auto'/*useHeight?(600*(product.fields.height/maxHeight))+'px':'auto'*/,
+              width: product.fields.width/3.5+'px'/*!useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'*/
+              }">
           </div>
           <span class="product-model">{{product.fields.model}}</span>
           <span class="product-capacity">{{product.fields.capacity}} Lts.</span> 
