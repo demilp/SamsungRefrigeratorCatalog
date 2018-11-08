@@ -2,55 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import VueResource from "vue-resource";
+import timeout from "./plugins/timeout";
+import session from "./plugins/session";
+import content from "./plugins/content";
 
-let content = { product: null, technology: null, video: null };
-content.install = function() {
-  Object.defineProperty(Vue.prototype, "$content", {
-    get() {
-      return content;
-    },
-    set(v) {
-      content = v;
-    }
-  });
-};
-
-let session = { events: [], id: "", dateTime: "" };
-session.install = function() {
-  Object.defineProperty(Vue.prototype, "$session", {
-    get() {
-      return session;
-    },
-    set(v) {
-      session = v;
-    }
-  });
-};
-let timeout = {};
-timeout.install = function(Vue) {
-  let t = {
-    id: null,
-    callback: null,
-    start: function(time) {
-      // eslint-disable-next-line
-      //console.log('start');
-      this.id = setTimeout(() => {
-        if (this.callback != null) this.callback();
-      }, time);
-    },
-    stop: function() {
-      // eslint-disable-next-line
-      //console.log('clear');      
-      clearTimeout(this.id);
-    }
-  };
-  Vue.prototype.$timeout = t;
-};
 Vue.use(timeout);
-Vue.use(VueResource);
 Vue.use(content);
 Vue.use(session);
-
+Vue.use(VueResource);
 new Vue({
   router,
   render: h => h(App)

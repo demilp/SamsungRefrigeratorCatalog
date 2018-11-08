@@ -32,27 +32,31 @@ export default {
     logSession: function() {
       let session = JSON.stringify(this.$session);
       this.$session = { events: [], id: this.guid(), dateTime: new Date() };
-
-        this.$http.post(
+      this.$http
+        .post(
           "http://localhost:9501/DexClient/BusinessEvent",
           {
             ApplicationId: 2,
             SecretAppKey: "4df216bd-9900-4ed7-aba4-37a84259187a",
             EventData: session
-          },{
+          },
+          {
             headers: {
               "Content-Type": "application/json"
             }
           }
-        ).then(res=>{
-          // eslint-disable-next-line
+        )
+        .then(
+          res => {
+            // eslint-disable-next-line
           console.log('res', res);
-          
-        }, err=>{
-          // eslint-disable-next-line
+          },
+          err => {
+            // eslint-disable-next-line
           console.log('err', err);
-        })
-        // eslint-disable-next-line
+          }
+        );
+      // eslint-disable-next-line
     },
     guid: function() {
       function s4() {

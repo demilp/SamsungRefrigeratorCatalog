@@ -81,8 +81,7 @@ export default {
   data() {
     return {
       product: {},
-      products: [],
-
+      products: []
     };
   },
   beforeMount() {
@@ -92,7 +91,7 @@ export default {
     this.products = this.$content.product.filter(
       p => p.fields.style == this.product.fields.style
     );
-    
+
     this.$root.$emit("setheader", {
       page: "comparison",
       id: this.$route.params.id,
