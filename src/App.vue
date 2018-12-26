@@ -36,8 +36,8 @@ export default {
         .post(
           "http://localhost:9501/DexClient/BusinessEvent",
           {
-            ApplicationId: 2,
-            SecretAppKey: "4df216bd-9900-4ed7-aba4-37a84259187a",
+            ApplicationId: 6,
+            SecretAppKey: "bc177529-55cf-4c37-8de8-4181ad6bcb6d",
             EventData: session
           },
           {

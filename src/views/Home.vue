@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="bottom">  
-      <h2 class="bottom-text">Conoce más sobre nustras<br>principales tecnologías</h2>
+      <h2 class="bottom-text">Conoce más sobre nuestras<br>principales tecnologías</h2>
       <div class="bottom-technologies">
         <router-link to="/technology/twincooling" tag="div" class="bottom-technology"><img src="@/assets/home/logos_tecnologias_twin_cooling.png"><hr><span class="technology-text">SISTEMA DE REFRIGERECIÓN<br>INDEPENDIENTE</span></router-link>
         <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology"><img src="@/assets/home/logos_tecnologias_digital_inverter.png"><hr><span class="technology-text">MAYOR AHORRO DE ENERGÍA</span></router-link>
@@ -32,6 +32,16 @@ export default {
   methods: {
     playVideo: function(i) {
       this.currentVideoIndex = i;
+    }
+  },
+  beforeMount: function() {
+    if (
+      this.$content.technology == null ||
+      this.$content.product == null ||
+      this.$content.video == null
+    ) {
+      this.$router.push({ path: "/" });
+      return;
     }
   }
 };

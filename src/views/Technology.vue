@@ -1,16 +1,21 @@
 <template>
   <div class="technology">
+    <div class="top">
+      <span>Conoce nuestra tecnología</span>
+      <span v-if="tech=='twincooling'">twin cooling</span>
+      <span v-else>digital inverter</span>
+    </div>
     <div class="carousel-container">
       <carousel :navigationEnabled="true" :perPage=4 :paginationEnabled="false" class="carousel" v-bind:class="{ centered: videos.length < 4 }">
         <slide v-for="(video, index) in videos" :key="video.thumbnail">
           <div v-if="currentVideoIndex==index" class="thumb-selector"></div>
-          <img :src="'content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
+          <img :src="'/content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
           <img src="@/assets/product/thumbnails_video_play.png" @click="playVideo(index)" class="thumb-videoicon">
         </slide>
       </carousel>
     </div>
     <div class="video-container">
-      <video ref="video" :src="'content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
+      <video ref="video" :src="'/content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
     </div>
     <router-link class="close-btn" to="/home" tag="span">X</router-link>
   </div>
@@ -28,13 +33,23 @@ export default {
     return {
       videos: [],
       techLogo: "",
-      currentVideoIndex: 0
+      currentVideoIndex: 0,
+      tech: ""
     };
   },
   beforeMount: function() {
-    let t = this.$content.technology.find(
-      t => t.fields.name === this.$route.params.id
-    );
+    if (
+      this.$content.technology == null ||
+      this.$content.product == null ||
+      this.$content.video == null
+    ) {
+      this.$router.push({ path: "/" });
+      return;
+    }
+
+    this.tech = this.$route.params.id;
+
+    let t = this.$content.technology.find(t => t.fields.name === this.tech);
 
     this.videos = t.fields.videos.map(v => {
       return {
@@ -43,7 +58,7 @@ export default {
       };
     });
 
-    if (this.$route.params.id == "twincooling") {
+    if (this.tech == "twincooling") {
       this.techLogo = "http://placehold.it/620x120";
     } else {
       this.techLogo = "http://placehold.it/620x120";
@@ -78,8 +93,17 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 250px 0;
+
   position: relative;
+}
+.top {
+  margin: 50px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: samsung-bold;
+  font-size: 4em;
 }
 .carousel-container {
   width: 100%;
@@ -143,7 +167,7 @@ export default {
 .close-btn {
   position: absolute;
   right: 30px;
-  top: -300px;
+  top: -75px;
   color: #0378bd;
   font-size: 5em;
   font-family: samsung-bold;

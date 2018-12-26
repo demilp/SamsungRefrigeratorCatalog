@@ -3,7 +3,10 @@
       <div class="top">
           <div class="top-left">
             <div class="top-left-part">
-              <img v-if="product.fields.technology=='twincooling'"  src="@/assets/product/logo_twin_cooling.png"  @click="popup('twincooling')"> 
+              <img v-if="product.fields.model=='RH77H90507H'"  src="@/assets/product/logo_food_showcase.png">
+              <img v-else-if="product.fields.technology=='twincooling'"  src="@/assets/product/logo_twin_cooling.png"  @click="popup('twincooling')">
+              <img v-else-if="product.fields.technology=='allaround'"  src="@/assets/product/logo_All_around_cooling.png">
+              <img v-else-if="product.fields.technology=='triple'"  src="@/assets/product/logo_triple_cooling.png">
             </div>
             <div class="top-left-part">
               <hr>
@@ -17,7 +20,7 @@
             </div>
             <div class="top-center">
               <div class="current-image-container">
-                <img class="current-image" :src="'content/'+currentImage.fields.file.url">
+                <img class="current-image" :src="'/content/'+currentImage.fields.file.url">
               </div>              
             </div>
           <div class="top-right">
@@ -30,7 +33,7 @@
                 <div class="slick-arrow" @click="()=>{this.$refs.slick.prev()}">▲</div>
                 <slick ref="slick" :options="{slidesToShow:2, vertical:true, verticalSwiping:true, infinite:false, arrows:false}">
                   <div v-for="im in product.fields.images" :key="im.sys.id" class="product-image-container">
-                    <img :src="'content/'+im.fields.file.url" @click="currentImage=im" class="product-image">
+                    <img :src="'/content/'+im.fields.file.url" @click="currentImage=im" class="product-image">
                     <hr>
                   </div>
                 </slick>
@@ -51,7 +54,7 @@
             <carousel :navigationEnabled="true" :perPage=7 class="carousel-other-products" :paginationEnabled="false" v-bind:class="{ centered: products.length < 7 }">
               <slide v-for="p in products" :key="p.sys.id">
                 <router-link v-if="p.fields.mainImage" :to="'/product/'+p.fields.model" tag="div" class="other-product-container">
-                  <img :src="'content/'+p.fields.mainImage.fields.file.url" class="other-product">
+                  <img :src="'/content/'+p.fields.mainImage.fields.file.url" class="other-product">
                 </router-link>
               </slide>
             </carousel>
@@ -65,12 +68,12 @@
               <carousel :navigationEnabled="true" :perPage=4 :paginationEnabled="false" class="popup-carousel" v-bind:class="{ centered: videos.length < 4 }">
                 <slide v-for="(video, index) in videos" :key="video.thumbnail">
                   <div v-if="currentVideoIndex==index" class="thumb-selector"></div>
-                  <img :src="'content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
+                  <img :src="'/content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
                   <img src="@/assets/product/thumbnails_video_play.png" @click="playVideo(index)" class="thumb-videoicon">
                 </slide>
               </carousel>
             </div>
-            <video ref="video" :src="'content/'+videos[currentVideoIndex].video" class="popup-video" autoplay></video>
+            <video ref="video" :src="'/content/'+videos[currentVideoIndex].video" class="popup-video" autoplay></video>
             <span class="close-btn" @click="closePopup">X</span>
           </div>            
         </div>
@@ -156,6 +159,15 @@ export default {
     }
   },
   beforeMount() {
+    if (
+      this.$content.technology == null ||
+      this.$content.product == null ||
+      this.$content.video == null
+    ) {
+      this.$router.push({ path: "/" });
+      return;
+    }
+
     this.load();
     this.$nextTick(() => {
       this.$refs.slick.goTo(0, true);

@@ -7,7 +7,7 @@
             <img v-if="product.fields.technology=='twincooling'" src="@/assets/category/categoria_logo_twin_cooling.png">
           </div>
           <div class="product-image-container">
-            <img class="product-image" v-if="product.fields.mainImage" :src="'content/'+product.fields.mainImage.fields.file.url"
+            <img class="product-image" v-if="product.fields.mainImage" :src="'/content/'+product.fields.mainImage.fields.file.url"
             v-bind:style="{
               height: 'auto'/*useHeight?(600*(product.fields.height/maxHeight))+'px':'auto'*/,
               width: product.fields.width/3.5+'px'/*!useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'*/
@@ -38,6 +38,15 @@ export default {
     };
   },
   beforeMount() {
+    if (
+      this.$content.technology == null ||
+      this.$content.product == null ||
+      this.$content.video == null
+    ) {
+      this.$router.push({ path: "/" });
+      return;
+    }
+
     this.products = this.$content.product.filter(
       p => p.fields.style == this.$route.params.id
     );

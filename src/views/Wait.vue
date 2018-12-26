@@ -1,7 +1,7 @@
 <template>
   <div class="wait">
     <router-link to="/home" tag="div">
-      <video src="@/assets/wait/c2a.mp4" autoplay loop muted>
+      <video src="@/assets/wait/c2a.webm" autoplay loop muted>
       </video>
     </router-link>
   </div>
@@ -14,6 +14,16 @@ export default {
     return {
       video: ""
     };
+  },
+  beforeMount: function() {
+    if (
+      this.$content.technology == null ||
+      this.$content.product == null ||
+      this.$content.video == null
+    ) {
+      this.$router.push({ path: "/" });
+      return;
+    }
   }
 };
 </script>
