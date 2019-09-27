@@ -1,9 +1,10 @@
 <template>
   <div class="wait">
-    <router-link to="/home" tag="div">
-      <video src="@/assets/wait/c2a.webm" autoplay loop muted>
-      </video>
-    </router-link>
+    <video src="@/assets/wait/c2a.webm" autoplay loop muted></video>
+    <div class="buttons">
+      <router-link to="/home/heladera" tag="div" />
+      <router-link to="/home/lavarropas" tag="div" />
+    </div>
   </div>
 </template>
 
@@ -36,5 +37,15 @@ export default {
 video {
   width: 100%;
   height: 100%;
+}
+.buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.buttons div {
+  height: 50%;
 }
 </style>

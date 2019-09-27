@@ -32,7 +32,13 @@
       "plugin:vue/essential",
       "@vue/prettier"
     ],
-    "rules": {},
+    "rules": {
+      "no-debugger": "off",
+      "no-console": "off",
+      "no-unused-vars": "off",
+      "no-cond-assign": "off",
+      "no-undef": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
@@ -43,8 +49,6 @@
     }
   },
   "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
+    "cover 99.5%"
   ]
 }

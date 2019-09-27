@@ -3,7 +3,7 @@
     <div class="container">
       <div class="content">
         <div class="product-image-container">
-          <img class="product-image" v-if="product.fields.mainImage" :src="'/content/'+product.fields.mainImage.fields.file.url"
+          <img class="product-image" v-if="product.fields.mainImage" :src="'./content/'+product.fields.mainImage.fields.file.url"
           v-bind:style="{
             height: product.fields.height/3+'px'/*!wider?(900*(product.fields.height/biggest.fields.height))+'px':'auto'*/, 
             width: 'auto'/*wider?(250*(product.fields.width/biggest.fields.width))+'px':'auto'*/
@@ -36,7 +36,7 @@
         <slide class="" v-for="p in products" :key="p.sys.id">
           <div class="content2">
             <div class="product-image-container">
-              <img class="product-image" v-if="p.fields.mainImage" :src="'/content/'+p.fields.mainImage.fields.file.url"
+              <img class="product-image" v-if="p.fields.mainImage" :src="'./content/'+p.fields.mainImage.fields.file.url"
               v-bind:style="{
                 height: p.fields.height/3+'px'/*!wider?(900*(product.fields.height/biggest.fields.height))+'px':'auto'*/, 
                 width: 'auto'/*wider?(250*(product.fields.width/biggest.fields.width))+'px':'auto'*/
@@ -104,7 +104,8 @@ export default {
     this.$root.$emit("setheader", {
       page: "comparison",
       id: this.$route.params.id,
-      style: this.product.fields.style
+      style: this.product.fields.style,
+      type: this.product.fields.category
     });
   }
 };

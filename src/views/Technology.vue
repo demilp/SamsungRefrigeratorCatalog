@@ -1,23 +1,22 @@
 <template>
   <div class="technology">
     <div class="top">
-      <span>Conoce nuestra tecnología</span>
-      <span v-if="tech=='twincooling'">twin cooling</span>
-      <span v-else>digital inverter</span>
+      <span v-if="tech=='twincooling'">Conocé nuestro nuevo sistema de refrigeración independiente</span>
+      <span v-else>Descubrí los beneficios de nuestra tecnología Digital Inverter</span>
     </div>
     <div class="carousel-container">
       <carousel :navigationEnabled="true" :perPage=4 :paginationEnabled="false" class="carousel" v-bind:class="{ centered: videos.length < 4 }">
         <slide v-for="(video, index) in videos" :key="video.thumbnail">
           <div v-if="currentVideoIndex==index" class="thumb-selector"></div>
-          <img :src="'/content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
+          <img :src="'./content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
           <img src="@/assets/product/thumbnails_video_play.png" @click="playVideo(index)" class="thumb-videoicon">
         </slide>
       </carousel>
     </div>
     <div class="video-container">
-      <video ref="video" :src="'/content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
+      <video ref="video" :src="'./content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
     </div>
-    <router-link class="close-btn" to="/home" tag="span">X</router-link>
+    <router-link class="close-btn" to="/wait" tag="span">X</router-link>
   </div>
 </template>
 
@@ -103,7 +102,8 @@ export default {
   justify-content: center;
   flex-direction: column;
   font-family: samsung-bold;
-  font-size: 4em;
+  text-align: center;
+  font-size: 3.25em;
 }
 .carousel-container {
   width: 100%;

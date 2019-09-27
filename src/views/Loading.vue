@@ -11,15 +11,6 @@ export default {
     return {};
   },
   methods: {
-    Load() {
-      this.$http
-        .get("/content/data.json")
-        .then(function(res) {
-          this.$content = res.body;
-          this.$router.push({ path: "/wait" });
-        })
-        .catch(() => {});
-    },
     readTextFile: function(file) {
       var rawFile = new XMLHttpRequest();
       rawFile.open("GET", file, false);
@@ -44,7 +35,7 @@ export default {
       this.$router.push({ path: "/wait" });
     } else {
       //this.Load();
-      this.readTextFile("/content/data.json");
+      this.readTextFile("./content/data.json");
     }
   }
 };

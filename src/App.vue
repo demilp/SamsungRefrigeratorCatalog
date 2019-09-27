@@ -1,8 +1,10 @@
 <template>
   <!--<div id="app">-->
-  <div id="app" class="unselectable" @touchstart="resetTimeout">
-    <Header v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
+  <div id="app" class="unselectable" @touchstart="resetTimeout" @mousedown="resetTimeout">
+    <Header id="header-top" v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
+    <Header id="header-bottom" v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
     <router-view/>
+    
   </div>
 </template>
 
@@ -19,15 +21,19 @@ export default {
   beforeMount: function() {
     this.$session = { events: [], id: this.guid(), dateTime: new Date() };
     this.$timeout.callback = () => {
-      this.logSession();
       this.$router.push({ path: "/wait" });
+      this.logSession();      
     };
     this.$timeout.start(30000);
   },
   methods: {
     resetTimeout: function() {
-      this.$timeout.stop();
-      this.$timeout.start(30000);
+      if(new Date().getTime() - this.$timeout.startTime > 1000){
+        console.log('resetTimeout');
+        
+        this.$timeout.stop();
+        this.$timeout.start(30000);
+      }
     },
     logSession: function() {
       let session = JSON.stringify(this.$session);
@@ -96,6 +102,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background-color: white;
+}
+#header-bottom{
+  position: absolute;
+  bottom: 250px;
 }
 #app {
   width: 1080px;
@@ -104,11 +115,6 @@ body {
   overflow: hidden;
 }
 .unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 @font-face {

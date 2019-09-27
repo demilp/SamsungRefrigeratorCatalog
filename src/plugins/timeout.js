@@ -3,7 +3,9 @@ export default {
     let t = {
       id: null,
       callback: null,
+      startTime: null,
       start: function(time) {
+        this.startTime = new Date().getTime();
         this.id = setTimeout(() => {
           if (this.callback != null) this.callback();
         }, time);

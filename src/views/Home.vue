@@ -1,24 +1,131 @@
 <template>
   <div class="home">
-    <div class="top">
-      <div>
-        <h1>Elegí la heladera que mejor<br>se adapte a tus necesidades</h1>
+    <div v-if="category==='heladera'">
+      <div class="top">
+        <div>
+          <h1>
+            Elegí la heladera que mejor
+            <br />se adapte a tus necesidades
+          </h1>
+        </div>
+        <div>
+          <ul>
+            <router-link to="/category/frenchdoor" tag="li" class="category">
+              <img src="@/assets/home/iconos_heladeras_French_Door.png" alt />
+              <span class="category-text">
+                French
+                <br />Door
+              </span>
+            </router-link>
+            <router-link to="/category/sidebyside" tag="li" class="category">
+              <img src="@/assets/home/iconos_heladeras_Side_by_Side.png" alt />
+              <span class="category-text">
+                Side by
+                <br />Side
+              </span>
+            </router-link>
+            <router-link to="/category/bottomfreezer" tag="li" class="category">
+              <img src="@/assets/home/iconos_heladeras_freezer_inferior.png" alt />
+              <span class="category-text">
+                Freezer
+                <br />Inferior
+              </span>
+            </router-link>
+            <router-link to="/category/topfreezer" tag="li" class="category">
+              <img src="@/assets/home/iconos_heladeras_freezer_superior.png" alt />
+              <span class="category-text">
+                Freezer
+                <br />Superior
+              </span>
+            </router-link>
+          </ul>
+        </div>
       </div>
-      <div>
-        <ul>
-          <router-link to="/category/topfreezer" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_freezer_superior.png" alt=""><span class="category-text">Freezer<br>Superior</span></router-link>
-          <router-link to="/category/bottomfreezer" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_freezer_inferior.png" alt=""><span class="category-text">Freezer<br>Inferior</span></router-link>
-          <router-link to="/category/sidebyside" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_Side_by_Side.png" alt=""><span class="category-text">Side by<br>Side</span></router-link>
-          <router-link to="/category/frenchdoor" tag="li" class="category"><img src="@/assets/home/iconos_heladeras_French_Door.png" alt=""><span class="category-text">French<br>Door</span></router-link>
-        </ul>
+      <div class="bottom">
+        <h2 class="bottom-text">
+          Conoce más sobre nuestras
+          <br />principales tecnologías
+        </h2>
+        <div class="bottom-technologies">
+          <router-link to="/technology/twincooling" tag="div" class="bottom-technology">
+            <img src="@/assets/home/logos_tecnologias_twin_cooling.png" />
+            <hr />
+            <span class="technology-text">
+              SISTEMA DE REFRIGERECIÓN
+              <br />INDEPENDIENTE
+            </span>
+          </router-link>
+          <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology">
+            <img src="@/assets/home/logos_tecnologias_digital_inverter.png" />
+            <hr />
+            <span class="technology-text">MAYOR AHORRO DE ENERGÍA</span>
+          </router-link>
+        </div>
       </div>
     </div>
-    <div class="bottom">  
-      <h2 class="bottom-text">Conoce más sobre nuestras<br>principales tecnologías</h2>
-      <div class="bottom-technologies">
-        <router-link to="/technology/twincooling" tag="div" class="bottom-technology"><img src="@/assets/home/logos_tecnologias_twin_cooling.png"><hr><span class="technology-text">SISTEMA DE REFRIGERECIÓN<br>INDEPENDIENTE</span></router-link>
-        <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology"><img src="@/assets/home/logos_tecnologias_digital_inverter.png"><hr><span class="technology-text">MAYOR AHORRO DE ENERGÍA</span></router-link>
-      </div>      
+
+    <div v-else>
+      <div class="top">
+        <div>
+          <h1>
+            Elegí el lavarropas que mejor
+            <br />se adapte a tus necesidades
+          </h1>
+        </div>
+        <div>
+          <ul>
+            <router-link to="/category/topload" tag="li" class="category">
+              <img src="@/assets/home/topload.png" alt />
+              <span class="category-text">
+                Carga
+                <br />Superior
+              </span>
+            </router-link>
+            <router-link to="/category/frontload" tag="li" class="category">
+              <img src="@/assets/home/frontload.png" alt />
+              <span class="category-text">
+                Carga
+                <br />Frontal
+              </span>
+            </router-link>
+            <router-link to="/category/toploaddryer" tag="li" class="category">
+              <img src="@/assets/home/toploaddryer.png" alt />
+              <span class="category-text">
+                Secador
+                <br />Carga Superior
+              </span>
+            </router-link>
+            <router-link to="/category/frontloaddryer" tag="li" class="category">
+              <img src="@/assets/home/frontloaddryer.png" alt />
+              <span class="category-text">
+                Secador
+                <br />Carga Frontal
+              </span>
+            </router-link>
+          </ul>
+        </div>
+      </div>
+      <div class="bottom">
+        <h2 class="bottom-text">
+          Conoce más sobre nuestras
+          <br />principales tecnologías
+        </h2>
+        <div class="bottom-technologies">
+          <router-link to="/technology/twincooling" tag="div" class="bottom-technology">
+            <img src="@/assets/home/logos_tecnologias_twin_cooling.png" />
+            <hr />
+            <span class="technology-text">
+              SISTEMA DE REFRIGERECIÓN
+              <br />INDEPENDIENTE
+            </span>
+          </router-link>
+          <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology">
+            <img src="@/assets/home/logos_tecnologias_digital_inverter.png" />
+            <hr />
+            <span class="technology-text">MAYOR AHORRO DE ENERGÍA</span>
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -27,7 +134,9 @@
 export default {
   name: "Home",
   data() {
-    return {};
+    return {
+      category: ""
+    };
   },
   methods: {
     playVideo: function(i) {
@@ -43,6 +152,9 @@ export default {
       this.$router.push({ path: "/" });
       return;
     }
+  },
+  mounted: function() {
+    this.category = this.$route.params.category;
   }
 };
 </script>
@@ -73,11 +185,17 @@ li {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.category img {
+  width: 109px;
 }
 .category-text {
   margin-top: 15px;
   color: #1bd4ff;
   font-family: samsung-bold;
+  font-size: 2em;
 }
 .bottom {
   display: flex;

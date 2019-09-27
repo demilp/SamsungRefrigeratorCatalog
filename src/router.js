@@ -11,7 +11,10 @@ import Comparison from "./views/Comparison.vue";
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
+  /*mode:
+    window.iframed || window.location.href.indexOf("file://") !== -1
+      ? "hash"
+      : "history",*/
   routes: [
     {
       path: "/",
@@ -24,7 +27,7 @@ export default new Router({
       component: Wait
     },
     {
-      path: "/home",
+      path: "/home/:category",
       name: "home",
       component: Home
     },

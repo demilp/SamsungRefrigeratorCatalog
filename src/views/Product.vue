@@ -10,17 +10,18 @@
             </div>
             <div class="top-left-part">
               <hr>
-              <img src="@/assets/product/logo_digital_inverter.png" @click="popup('digitalinverter')">              
+              <img v-if="product.fields.digitalInverter" src="@/assets/product/logo_digital_inverter.png" @click="popup('digitalinverter')">              
             </div>
             <div class="top-left-part">
               <hr>
-              <img src="@/assets/product/icono_capacidad.png">
-              <span>{{product.fields.capacity}} Litros</span>
+              <img v-if="product.fields.category=='heladera'" src="@/assets/product/icono_capacidad.png">
+              <img v-else src="@/assets/product/icono_capacidad_wm.png">
+              <span>{{product.fields.capacity}} {{product.fields.category=='heladera'?'Litros':'Kilos'}}</span>
             </div>
             </div>
             <div class="top-center">
               <div class="current-image-container">
-                <img class="current-image" :src="'/content/'+currentImage.fields.file.url">
+                <img class="current-image" :src="'./content/'+currentImage.fields.file.url">
               </div>              
             </div>
           <div class="top-right">
@@ -33,7 +34,7 @@
                 <div class="slick-arrow" @click="()=>{this.$refs.slick.prev()}">▲</div>
                 <slick ref="slick" :options="{slidesToShow:2, vertical:true, verticalSwiping:true, infinite:false, arrows:false}">
                   <div v-for="im in product.fields.images" :key="im.sys.id" class="product-image-container">
-                    <img :src="'/content/'+im.fields.file.url" @click="currentImage=im" class="product-image">
+                    <img :src="'./content/'+im.fields.file.url" @click="currentImage=im" class="product-image">
                     <hr>
                   </div>
                 </slick>
@@ -45,16 +46,19 @@
           <div class="product-information">
             <span class="model-text">MODELO</span>
             <span class="product-model">{{product.fields.model}}</span>
-            <ul>
-              <li class="description"><span>Ancho {{product.fields.width}}mm - Profundidad {{product.fields.depth}}mm - Altura {{product.fields.height}}mm</span></li>
+            <!-- <ul>
+              <li v-if="this.product.fields.category=='heladera'" class="description"><span>Ancho {{product.fields.width}}mm - Profundidad {{product.fields.depth}}mm - Altura {{product.fields.height}}mm</span></li>
               <li v-for="line in product.fields.description" :key="line" class="description"><span>{{line}}</span></li>
-            </ul>
+            </ul> -->
+            <div class="description-container">
+              <img v-for="desc in product.fields.description" :key="desc.sys.id" :src="'./content/'+desc.fields.file.url" class="description">
+            </div>
           </div>
           <div class="carousel-other-products-container">
             <carousel :navigationEnabled="true" :perPage=7 class="carousel-other-products" :paginationEnabled="false" v-bind:class="{ centered: products.length < 7 }">
               <slide v-for="p in products" :key="p.sys.id">
                 <router-link v-if="p.fields.mainImage" :to="'/product/'+p.fields.model" tag="div" class="other-product-container">
-                  <img :src="'/content/'+p.fields.mainImage.fields.file.url" class="other-product">
+                  <img :src="'./content/'+p.fields.mainImage.fields.file.url" class="other-product">
                 </router-link>
               </slide>
             </carousel>
@@ -68,12 +72,12 @@
               <carousel :navigationEnabled="true" :perPage=4 :paginationEnabled="false" class="popup-carousel" v-bind:class="{ centered: videos.length < 4 }">
                 <slide v-for="(video, index) in videos" :key="video.thumbnail">
                   <div v-if="currentVideoIndex==index" class="thumb-selector"></div>
-                  <img :src="'/content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
+                  <img :src="'./content/'+video.thumbnail" @click="playVideo(index)" class="thumb">
                   <img src="@/assets/product/thumbnails_video_play.png" @click="playVideo(index)" class="thumb-videoicon">
                 </slide>
               </carousel>
             </div>
-            <video ref="video" :src="'/content/'+videos[currentVideoIndex].video" class="popup-video" autoplay></video>
+            <video ref="video" :src="'./content/'+videos[currentVideoIndex].video" class="popup-video" autoplay></video>
             <span class="close-btn" @click="closePopup">X</span>
           </div>            
         </div>
@@ -108,13 +112,15 @@ export default {
       );
       this.products = this.$content.product.filter(
         p => p.fields.style == this.product.fields.style
-      );
+      );    
+      
       if (this.product.fields.images)
         this.currentImage = this.product.fields.images[0];
       this.$root.$emit("setheader", {
         page: "product",
         id: this.$route.params.id,
-        style: this.product.fields.style
+        style: this.product.fields.style,
+        type: this.product.fields.category
       });
     },
     changeCurrentImage: function(i) {
@@ -133,13 +139,6 @@ export default {
         };
       });
       this.techLogo = tec;
-      if (tec == "twincooling") {
-        this.techLogo =
-          "/assets/product/logos_tecnologias_pop_up_twin_coolong.png";
-      } else {
-        this.techLogo =
-          "/assets/product/logos_tecnologias_pop_up_digital_inverter.png";
-      }
       this.playVideo(0);
       this.$nextTick(() => {
         this.$refs.video.onended = () => {
@@ -415,14 +414,14 @@ export default {
 ul {
   padding: 0;
 }
+.description-container{
+  background-color: #e7e7e9;
+  margin: 0 -40px;
+  padding: 0 40px;
+}
 .description {
-  display: flex;
-  align-items: center;
-  font-size: 1.2em;
-  vertical-align: middle;
-  font-family: samsung-medium;
-  list-style: none;
-  height: 30px;
+  max-height: 125px;
+  margin: 15px;
 }
 .description::before {
   color: #0184ca;

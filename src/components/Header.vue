@@ -1,11 +1,11 @@
 <template>
-    <div class="header">
-        <div>
-            <span v-for="r in routes" :key="r.route" class="header-route">
-              <router-link :to="r.route" tag="span">{{r.text}}</router-link>
-            </span>
-        </div>
+  <div class="header">
+    <div>
+      <span v-for="r in routes" :key="r.route" class="header-route">
+        <router-link :to="r.route" tag="span">{{r.text}}</router-link>
+      </span>
     </div>
+  </div>
 </template>
 
 <script>
@@ -16,8 +16,9 @@ export default {
   },
   created() {
     this.$root.$on("setheader", message => {
-      this.routes = [{ text: "HOME", route: "/home" }];
+      this.routes = [];
       if (message.page == "category") {
+        this.routes.push({ text: "INICIO", route: "/home/" + message.type });
         var n = { route: "/" + message.page + "/" + message.id };
         switch (message.id) {
           case "topfreezer":
@@ -32,11 +33,24 @@ export default {
           case "frenchdoor":
             n.text = "FRENCH DOOR";
             break;
+          case "frontload":
+            n.text = "FRONT LOAD";
+            break;
+          case "topload":
+            n.text = "TOP LOAD";
+            break;
+          case "frontloaddryer":
+            n.text = "FRONT LOAD";
+            break;
+          case "toploaddryer":
+            n.text = "SECADOR TOP LOAD";
+            break;
           default:
             break;
         }
         this.routes.push(n);
       } else if (message.page == "product" || message.page == "comparison") {
+        this.routes.push({ text: "INICIO", route: "/home/" + message.type });
         var j = { route: "/category/" + message.style };
         switch (message.style) {
           case "topfreezer":
@@ -50,6 +64,18 @@ export default {
             break;
           case "frenchdoor":
             j.text = "FRENCH DOOR";
+            break;
+          case "frontload":
+            j.text = "CARGA FRONTAL";
+            break;
+          case "topload":
+            j.text = "CARGA SUPERIOR";
+            break;
+          case "frontloaddryer":
+            j.text = "SECADOR CARGA FRONTAL";
+            break;
+          case "toploaddryer":
+            j.text = "SECADOR CARGA SUPERIOR";
             break;
           default:
             break;

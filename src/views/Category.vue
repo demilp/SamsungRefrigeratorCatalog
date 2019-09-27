@@ -1,21 +1,35 @@
+
 <template>
   <div class="category">
-    <carousel :navigationEnabled="true" :paginationEnabled="false" :perPage=3 class="carousel" v-bind:class="{ centered: products.length < 3 }">
+    <carousel
+      :navigationEnabled="true"
+      :paginationEnabled="false"
+      :perPage="3"
+      class="carousel"
+      v-bind:class="{ centered: products.length < 3 }"
+    >
       <slide v-for="product in products" :key="product.sys.id" class="product-container">
         <router-link :to="'/product/'+product.fields.model" tag="div" class="product">
           <div class="logo-container">
-            <img v-if="product.fields.technology=='twincooling'" src="@/assets/category/categoria_logo_twin_cooling.png">
+            <img
+              v-if="product.fields.technology=='twincooling'"
+              src="@/assets/category/categoria_logo_twin_cooling.png"
+            />
           </div>
           <div class="product-image-container">
-            <img class="product-image" v-if="product.fields.mainImage" :src="'/content/'+product.fields.mainImage.fields.file.url"
-            v-bind:style="{
+            <img
+              class="product-image"
+              v-if="product.fields.mainImage"
+              :src="'./content/'+product.fields.mainImage.fields.file.url"
+              v-bind:style="{
               height: 'auto'/*useHeight?(600*(product.fields.height/maxHeight))+'px':'auto'*/,
               width: product.fields.width/3.5+'px'/*!useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'*/
-              }">
+              }"
+            />
           </div>
           <span class="product-model">{{product.fields.model}}</span>
-          <span class="product-capacity">{{product.fields.capacity}} Lts.</span> 
-        </router-link>                
+          <span class="product-capacity">{{product.fields.capacity}} Lts.</span>
+        </router-link>
       </slide>
     </carousel>
   </div>
@@ -34,7 +48,14 @@ export default {
       products: [],
       maxWidth: 0,
       maxHeight: 0,
-      useHeight: true
+      useHeight: true,
+      refrigeratorStyles: [
+        "topfreezer",
+        "bottomfreezer",
+        "sidebyside",
+        "frenchdoor"
+      ],
+      wmStyles: ["topload", "frontload", "toploaddryer", "frontloaddryer"]
     };
   },
   beforeMount() {
@@ -50,37 +71,44 @@ export default {
     this.products = this.$content.product.filter(
       p => p.fields.style == this.$route.params.id
     );
-    let aspect = 240 / 600;
-    let maxAspect = Math.max.apply(
-      Math,
-      this.products.map(function(o) {
-        return o.fields.width / o.fields.height;
-      })
-    );
-    if (maxAspect > aspect) {
-      this.useHeight = false;
-    } else {
-      this.useHeight = true;
+    if (this.refrigeratorStyles.indexOf(this.$route.params.id) > -1) {
+      let aspect = 240 / 600;
+      let maxAspect = Math.max.apply(
+        Math,
+        this.products.map(function(o) {
+          return o.fields.width / o.fields.height;
+        })
+      );
+      if (maxAspect > aspect) {
+        this.useHeight = false;
+      } else {
+        this.useHeight = true;
+      }
+      this.maxWidth = Math.max.apply(
+        Math,
+        this.products.map(function(o) {
+          return o.fields.width;
+        })
+      );
+      this.maxHeight = Math.max.apply(
+        Math,
+        this.products.map(function(o) {
+          return o.fields.height;
+        })
+      );
     }
-    this.maxWidth = Math.max.apply(
-      Math,
-      this.products.map(function(o) {
-        return o.fields.width;
-      })
-    );
-    this.maxHeight = Math.max.apply(
-      Math,
-      this.products.map(function(o) {
-        return o.fields.height;
-      })
-    );
 
     if (this.products.length == 1) {
       this.$router.push({ path: "/product/" + this.products[0].fields.model });
     }
+
     this.$root.$emit("setheader", {
       page: "category",
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      type:
+        this.refrigeratorStyles.indexOf(this.$route.params.id) != -1
+          ? "heladeras"
+          : "lavarropas"
     });
   }
 };
@@ -90,8 +118,8 @@ export default {
   display: flex;
   justify-content: center;
   background-color: #ecedef;
-  margin-top: 788px;
-  height: 918px;
+  margin-top: 650px;
+  height: 750px;
 }
 .carousel {
   width: 80%;
