@@ -2,7 +2,7 @@
   <div class="wait">
     <video src="@/assets/wait/c2a.webm" autoplay loop muted></video>
     <div class="buttons">
-      <router-link to="/home/heladera" tag="div" />
+      <router-link to="/home/heladeras" tag="div" />
       <router-link to="/home/lavarropas" tag="div" />
     </div>
   </div>

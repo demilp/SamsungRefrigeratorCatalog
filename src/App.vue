@@ -1,10 +1,9 @@
 <template>
   <!--<div id="app">-->
   <div id="app" class="unselectable" @touchstart="resetTimeout" @mousedown="resetTimeout">
-    <Header id="header-top" v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
-    <Header id="header-bottom" v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1"/>
-    <router-view/>
-    
+    <Header id="header-top" v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1" />
+    <router-view />
+    <Header id="header-bottom" v-if="['home', 'wait', 'loading'].indexOf($route.name) == -1" />
   </div>
 </template>
 
@@ -20,20 +19,23 @@ export default {
   },
   beforeMount: function() {
     this.$session = { events: [], id: this.guid(), dateTime: new Date() };
-    this.$timeout.callback = () => {
-      this.$router.push({ path: "/wait" });
-      this.logSession();      
-    };
-    this.$timeout.start(30000);
+    if (this.$timeout) {
+      this.$timeout.callback = () => {
+        this.$router.push({ path: "/wait" });
+        this.logSession();
+      };
+      this.$timeout.start(30000);
+    }
   },
   methods: {
     resetTimeout: function() {
-      if(new Date().getTime() - this.$timeout.startTime > 1000){
-        console.log('resetTimeout');
-        
-        this.$timeout.stop();
-        this.$timeout.start(30000);
-      }
+      if (this.$timeout)
+        if (new Date().getTime() - this.$timeout.startTime > 1000) {
+          console.log("resetTimeout");
+
+          this.$timeout.stop();
+          this.$timeout.start(30000);
+        }
     },
     logSession: function() {
       let session = JSON.stringify(this.$session);
@@ -55,11 +57,11 @@ export default {
         .then(
           res => {
             // eslint-disable-next-line
-          console.log('res', res);
+            console.log("res", res);
           },
           err => {
             // eslint-disable-next-line
-          console.log('err', err);
+            console.log("err", err);
           }
         );
       // eslint-disable-next-line
@@ -104,9 +106,9 @@ body {
   padding: 0;
   background-color: white;
 }
-#header-bottom{
+#header-bottom {
   position: absolute;
-  bottom: 250px;
+  bottom: 125px;
 }
 #app {
   width: 1080px;

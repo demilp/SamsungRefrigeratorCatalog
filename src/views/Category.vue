@@ -67,7 +67,7 @@ export default {
       this.$router.push({ path: "/" });
       return;
     }
-
+debugger
     this.products = this.$content.product.filter(
       p => p.fields.style == this.$route.params.id
     );

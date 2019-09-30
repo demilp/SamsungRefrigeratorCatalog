@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div v-if="category==='heladera'">
+    <div v-if="category==='heladeras'">
       <div class="top">
         <div>
           <h1>
