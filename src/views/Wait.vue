@@ -1,9 +1,9 @@
 <template>
   <div class="wait">
-    <video src="@/assets/wait/c2a.webm" autoplay loop muted></video>
+    <video src="@/assets/wait/wait.mp4" autoplay loop muted></video>
     <div class="buttons">
-      <router-link to="/home/heladeras" tag="div" />
       <router-link to="/home/lavarropas" tag="div" />
+      <router-link to="/home/heladera" tag="div" />
     </div>
   </div>
 </template>
@@ -44,8 +44,10 @@ video {
   left: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
 }
 .buttons div {
-  height: 50%;
+  width: 50%;
 }
 </style>

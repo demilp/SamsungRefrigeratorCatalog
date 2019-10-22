@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div v-if="category==='heladeras'">
+    <div v-if="category==='heladera'">
       <div class="top">
         <div>
           <h1>
@@ -88,19 +88,13 @@
                 <br />Frontal
               </span>
             </router-link>
-            <router-link to="/category/toploaddryer" tag="li" class="category">
-              <img src="@/assets/home/toploaddryer.png" alt />
-              <span class="category-text">
-                Secador
-                <br />Carga Superior
-              </span>
+            <router-link to="/category/wdryer" tag="li" class="category">
+              <img src="@/assets/home/wdryer.png" alt />
+              <span class="category-text">Lavasecarropas</span>
             </router-link>
-            <router-link to="/category/frontloaddryer" tag="li" class="category">
-              <img src="@/assets/home/frontloaddryer.png" alt />
-              <span class="category-text">
-                Secador
-                <br />Carga Frontal
-              </span>
+            <router-link to="/category/dryer" tag="li" class="category">
+              <img src="@/assets/home/dryer.png" alt />
+              <span class="category-text">Secarropas</span>
             </router-link>
           </ul>
         </div>
@@ -111,22 +105,22 @@
           <br />principales tecnologías
         </h2>
         <div class="bottom-technologies">
-          <router-link to="/technology/twincooling" tag="div" class="bottom-technology">
-            <img src="@/assets/home/logos_tecnologias_twin_cooling.png" />
-            <hr />
+          <router-link to="/technology/ecobubble" tag="div" class="bottom-technology">
+            <img src="@/assets/home/logos_tecnologias_eco_bubble.png" />
+            <!-- <hr />
             <span class="technology-text">
-              SISTEMA DE REFRIGERECIÓN
-              <br />INDEPENDIENTE
-            </span>
+              <br />
+            </span> -->
           </router-link>
-          <router-link to="/technology/digitalinverter" tag="div" class="bottom-technology">
+          <router-link to="/technology/digitalinverterwm" tag="div" class="bottom-technology">
             <img src="@/assets/home/logos_tecnologias_digital_inverter.png" />
-            <hr />
-            <span class="technology-text">MAYOR AHORRO DE ENERGÍA</span>
+            <!-- <hr />
+            <span class="technology-text">MAYOR AHORRO DE ENERGÍA</span> -->
           </router-link>
         </div>
       </div>
     </div>
+    <router-link class="close-btn" to="/wait" tag="span">X</router-link>
   </div>
 </template>
 
@@ -166,6 +160,7 @@ export default {
   display: flex;
   flex-direction: column;
   text-align: center;
+  position: relative;
 }
 .top {
   height: 868px;
@@ -188,14 +183,19 @@ li {
   align-items: center;
 }
 
+.category {
+  display: flex;
+  justify-content: flex-start;
+}
 .category img {
-  width: 109px;
+  width: auto;
+  height: 250px;
 }
 .category-text {
   margin-top: 15px;
   color: #1bd4ff;
   font-family: samsung-bold;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .bottom {
   display: flex;
@@ -232,5 +232,13 @@ hr {
 }
 .technology-text {
   font-size: 1.25em;
+}
+.close-btn {
+  position: absolute;
+  right: 40px;
+  top: 30px;
+  color: #0378bd;
+  font-size: 5em;
+  font-family: samsung-bold;
 }
 </style>

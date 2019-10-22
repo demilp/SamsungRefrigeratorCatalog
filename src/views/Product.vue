@@ -2,7 +2,7 @@
   <div class="product">
     <div class="top">
       <div class="top-left">
-        <img :src="'./content/'+product.fields.descriptionLeft.fields.file.url">
+        <img v-if="product.fields.descriptionLeft" :src="'./content/'+product.fields.descriptionLeft.fields.file.url" />
       </div>
       <div class="top-center">
         <div class="current-image-container">
@@ -31,7 +31,7 @@
                 @click="currentImage=im"
                 class="product-image"
               />
-              <hr>
+              <hr />
             </div>
           </slick>
           <div class="slick-arrow" @click="()=>{this.$refs.slick.next()}">▼</div>
@@ -40,9 +40,18 @@
     </div>
     <div class="bottom">
       <div class="product-information">
-        <span class="model-text">{{product.fields.technology}}</span>
-        <span class="product-model">{{product.fields.model}}</span>
-        <hr>
+        <div class="product-information-top">
+          <div class="product-information-top-model">
+            <span class="model-text">{{product.fields.technology}}</span>
+            <span class="product-model">{{product.fields.model}}</span>
+          </div>
+          <div class="product-information-top-size">
+            <span>MEDIDAS (WxDxH): </span>&nbsp;
+            <span class="bold">{{product.fields.width}} x {{product.fields.depth}} x {{product.fields.height}} mm</span>
+          </div>
+        </div>
+
+        <hr />
         <!-- <ul>
               <li v-if="this.product.fields.category=='heladera'" class="description"><span>Ancho {{product.fields.width}}mm - Profundidad {{product.fields.depth}}mm - Altura {{product.fields.height}}mm</span></li>
               <li v-for="line in product.fields.description" :key="line" class="description"><span>{{line}}</span></li>
@@ -53,8 +62,8 @@
             :key="desc.sys.id"
             :src="'./content/'+product.fields.description"
             class="description"
-          /> -->
-          <img :src="'./content/'+product.fields.description.fields.file.url">
+          />-->
+          <img v-if="product.fields.description" :src="'./content/'+product.fields.description.fields.file.url" />
         </div>
       </div>
       <div class="carousel-other-products-container">
@@ -72,7 +81,7 @@
               tag="div"
               class="other-product-container"
             >
-              <img :src="'./content/'+p.fields.mainImage.fields.file.url" class="other-product" />
+              <img :src="'./content/'+p.fields.mainImageWithName.fields.file.url" class="other-product" />
             </router-link>
           </slide>
         </carousel>
@@ -139,6 +148,7 @@ export default {
   },
   methods: {
     load: function() {
+      debugger
       this.product = this.$content.product.find(
         p => p.fields.model == this.$route.params.id
       );
@@ -436,6 +446,21 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.product-information-top{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.product-information-top-model{
+  display: flex;
+  flex-direction: column;
+}
+.product-information-top-size{
+  display: flex;
+  flex-direction: row;
+  font-size: 2em;
+  align-self: center;
+}
 .model-text {
   font-size: 2em;
   font-family: samsung-bold;
@@ -446,8 +471,8 @@ export default {
   font-family: samsung-bold;
   font-size: 2em;
 }
-hr{  
-  margin: 0 0 20px 0;
+hr {
+  margin: 10px 0 10px 0;
   border-color: black;
 }
 ul {
@@ -483,7 +508,7 @@ ul {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin-top: 25px;
+  margin-top: 55px;
 }
 .carousel-other-products-container::after {
   content: "";
@@ -501,6 +526,7 @@ ul {
   width: 85%;
   z-index: 1;
 }
+.bold{font-family: "samsung-bold"}
 /deep/ .carousel-other-products .VueCarousel-navigation-button {
   color: white !important;
   font-size: 4em !important;
@@ -512,7 +538,7 @@ ul {
   top: 50% !important;
 }
 .other-product-container {
-  height: 150px;
+  height: 200px;
 }
 
 .other-product {

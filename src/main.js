@@ -6,7 +6,7 @@ import timeout from "./plugins/timeout";
 import session from "./plugins/session";
 import content from "./plugins/content";
 
-//Vue.use(timeout);
+Vue.use(timeout);
 Vue.use(content);
 Vue.use(session);
 Vue.use(VueResource);

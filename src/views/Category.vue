@@ -22,8 +22,8 @@
               v-if="product.fields.mainImage"
               :src="'./content/'+product.fields.mainImage.fields.file.url"
               v-bind:style="{
-              height: 'auto'/*useHeight?(600*(product.fields.height/maxHeight))+'px':'auto'*/,
-              width: product.fields.width/3.5+'px'/*!useHeight?(240*(product.fields.width/maxWidth))+'px':'auto'*/
+              height: 'auto',
+              width: (refrigeratorStyles.indexOf($route.params.id) > -1)?product.fields.width/3.5+'px':'250px'
               }"
             />
           </div>
@@ -55,7 +55,7 @@ export default {
         "sidebyside",
         "frenchdoor"
       ],
-      wmStyles: ["topload", "frontload", "toploaddryer", "frontloaddryer"]
+      wmStyles: ["topload", "frontload", "wdryer", "dryer"]
     };
   },
   beforeMount() {
@@ -67,12 +67,13 @@ export default {
       this.$router.push({ path: "/" });
       return;
     }
-debugger
+
     this.products = this.$content.product.filter(
       p => p.fields.style == this.$route.params.id
     );
+    
     if (this.refrigeratorStyles.indexOf(this.$route.params.id) > -1) {
-      let aspect = 240 / 600;
+      let aspect = 240 / 6;
       let maxAspect = Math.max.apply(
         Math,
         this.products.map(function(o) {
@@ -107,7 +108,7 @@ debugger
       id: this.$route.params.id,
       type:
         this.refrigeratorStyles.indexOf(this.$route.params.id) != -1
-          ? "heladeras"
+          ? "heladera"
           : "lavarropas"
     });
   }

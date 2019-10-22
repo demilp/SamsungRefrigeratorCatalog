@@ -33,17 +33,18 @@ export default {
           case "frenchdoor":
             n.text = "FRENCH DOOR";
             break;
+
           case "frontload":
-            n.text = "FRONT LOAD";
+            n.text = "CARGA SUPERIOR";
             break;
           case "topload":
-            n.text = "TOP LOAD";
+            n.text = "CARGA FRONTAL";
             break;
-          case "frontloaddryer":
-            n.text = "FRONT LOAD";
+          case "dryer":
+            n.text = "SECARROPAS";
             break;
-          case "toploaddryer":
-            n.text = "SECADOR TOP LOAD";
+          case "wdryer":
+            n.text = "LAVASECARROPAS";
             break;
           default:
             break;
@@ -68,14 +69,15 @@ export default {
           case "frontload":
             j.text = "CARGA FRONTAL";
             break;
+
           case "topload":
-            j.text = "CARGA SUPERIOR";
+            j.text = "SECARROPAS";
             break;
-          case "frontloaddryer":
+          case "dryer":
             j.text = "SECADOR CARGA FRONTAL";
             break;
-          case "toploaddryer":
-            j.text = "SECADOR CARGA SUPERIOR";
+          case "wdryer":
+            j.text = "LAVASECARROPAS";
             break;
           default:
             break;
