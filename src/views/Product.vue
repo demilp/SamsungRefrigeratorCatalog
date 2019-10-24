@@ -458,7 +458,7 @@ export default {
 .product-information-top-size{
   display: flex;
   flex-direction: row;
-  font-size: 2em;
+  font-size: 1.5em;
   align-self: center;
 }
 .model-text {

@@ -136,10 +136,10 @@ export default {
 }
 .product-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 .product {
-  width: 240px;
+  width: 250px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -157,7 +157,7 @@ export default {
 }
 .product-model {
   font-family: samsung-bold;
-  font-size: 38px;
+  font-size: 30px;
 }
 .product-capacity {
   font-family: samsung-regular;

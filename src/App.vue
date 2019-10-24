@@ -108,7 +108,7 @@ body {
 }
 #header-bottom {
   position: absolute;
-  bottom: 125px;
+  bottom: 75px;
 }
 #app {
   width: 1080px;
