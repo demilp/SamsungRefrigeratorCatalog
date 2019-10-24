@@ -114,6 +114,7 @@
           </carousel>
         </div>
         <video
+          poster="@/assets/wait/poster.jpg"
           ref="video"
           :src="'./content/'+videos[currentVideoIndex].video"
           class="popup-video"

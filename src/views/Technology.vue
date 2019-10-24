@@ -14,7 +14,7 @@
       </carousel>
     </div>
     <div class="video-container">
-      <video ref="video" :src="'./content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
+      <video poster="@/assets/wait/poster.jpg" ref="video" :src="'./content/'+videos[currentVideoIndex].video" class="video" autoplay></video>
     </div>
     <router-link class="close-btn" to="/wait" tag="span">X</router-link>
   </div>

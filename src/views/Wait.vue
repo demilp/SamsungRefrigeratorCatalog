@@ -1,6 +1,6 @@
 <template>
   <div class="wait">
-    <video src="@/assets/wait/wait.mp4" autoplay loop muted></video>
+    <video poster="@/assets/wait/poster.jpg" src="@/assets/wait/wait.mp4" autoplay loop muted></video>
     <div class="buttons">
       <router-link to="/home/lavarropas" tag="div" />
       <router-link to="/home/heladera" tag="div" />
