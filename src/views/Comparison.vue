@@ -3,70 +3,88 @@
     <div class="container">
       <div class="content">
         <div class="product-image-container">
-          <img class="product-image" v-if="product.fields.mainImage" :src="'./content/'+product.fields.mainImage.fields.file.url"
-          v-bind:style="{
-            height: product.fields.height/3+'px'/*!wider?(900*(product.fields.height/biggest.fields.height))+'px':'auto'*/, 
-            width: 'auto'/*wider?(250*(product.fields.width/biggest.fields.width))+'px':'auto'*/
-          }">
+          <img
+            class="product-image"
+            v-if="product.fields.mainImage"
+            :src="'./content/' + product.fields.mainImage.fields.file.url"
+            v-bind:style="{
+              height: height(product),
+              width: 'auto'
+            }"
+          />
         </div>
-        <span class="product-model">{{product.fields.model}}</span>
+        <span class="product-model">{{ product.fields.model }}</span>
         <div class="information-container">
           <div class="information">
             <span>Ancho Neto</span>
-            <span class="product-data">{{product.fields.width}} mm</span>
+            <span class="product-data">{{ product.fields.width }} mm</span>
           </div>
           <div class="information">
             <span>Altura con bisagra</span>
-            <span class="product-data">{{product.fields.height}} mm</span>
+            <span class="product-data">{{ product.fields.height }} mm</span>
           </div>
           <div class="information">
             <span>Profundidad neta con manija</span>
-            <span class="product-data">{{product.fields.depth}} mm</span>
+            <span class="product-data">{{ product.fields.depth }} mm</span>
           </div>
           <div class="information">
             <span>Neto Total</span>
-            <span class="product-data">{{product.fields.capacity}} L</span>
+            <span class="product-data">{{ product.fields.capacity }} L</span>
           </div>
         </div>
       </div>
     </div>
     <div class="container">
       <div class="content">
-      <carousel class="carousel" :navigationEnabled="true" :perPage=1 :paginationEnabled="false">
-        <slide class="" v-for="p in products" :key="p.sys.id">
-          <div class="content2">
-            <div class="product-image-container">
-              <img class="product-image" v-if="p.fields.mainImage" :src="'./content/'+p.fields.mainImage.fields.file.url"
-              v-bind:style="{
-                height: p.fields.height/3+'px'/*!wider?(900*(product.fields.height/biggest.fields.height))+'px':'auto'*/, 
-                width: 'auto'/*wider?(250*(product.fields.width/biggest.fields.width))+'px':'auto'*/
-              }">
+        <carousel
+          class="carousel"
+          :navigationEnabled="true"
+          :perPage="1"
+          :paginationEnabled="false"
+        >
+          <slide class="" v-for="p in products" :key="p.sys.id">
+            <div class="content2">
+              <div class="product-image-container">
+                <img
+                  class="product-image"
+                  v-if="p.fields.mainImage"
+                  :src="'./content/' + p.fields.mainImage.fields.file.url"
+                  v-bind:style="{
+                    height: height(p),
+                    width: 'auto'
+                  }"
+                />
+              </div>
+              <span class="product-model">{{ p.fields.model }}</span>
+              <div class="information-container">
+                <div class="information">
+                  <span>Ancho Neto</span>
+                  <span class="product-data">{{ p.fields.width }} mm</span>
+                </div>
+                <div class="information">
+                  <span>Altura con bisagra</span>
+                  <span class="product-data">{{ p.fields.height }} mm</span>
+                </div>
+                <div class="information">
+                  <span>Profundidad neta con manija</span>
+                  <span class="product-data">{{ p.fields.depth }} mm</span>
+                </div>
+                <div class="information">
+                  <span>Neto Total</span>
+                  <span class="product-data">{{ p.fields.capacity }} L</span>
+                </div>
+              </div>
             </div>
-            <span class="product-model">{{p.fields.model}}</span>
-            <div class="information-container">
-              <div class="information">
-                <span>Ancho Neto</span>
-                <span class="product-data">{{p.fields.width}} mm</span>
-              </div>
-              <div class="information">
-                <span>Altura con bisagra</span>
-                <span class="product-data">{{p.fields.height}} mm</span>
-              </div>
-              <div class="information">
-                <span>Profundidad neta con manija</span>
-                <span class="product-data">{{p.fields.depth}} mm</span>
-              </div>
-              <div class="information">
-                <span>Neto Total</span>
-                <span class="product-data">{{p.fields.capacity}} L</span>
-              </div>
-            </div>
-          </div>
-        </slide>
-      </carousel>
+          </slide>
+        </carousel>
       </div>
     </div>
-    <router-link class="close-btn" :to="'/product/'+product.fields.model" tag="div">X</router-link>
+    <router-link
+      class="close-btn"
+      :to="'/product/' + product.fields.model"
+      tag="div"
+      >X</router-link
+    >
   </div>
 </template>
 
@@ -107,6 +125,12 @@ export default {
       style: this.product.fields.style,
       type: this.product.fields.category
     });
+  },
+  methods: {
+    height: function(product) {
+      if (product.fields.model === "WD90M4453MW") return 850 / 3 + "px";
+      return product.fields.height / 3 + "px";
+    }
   }
 };
 </script>

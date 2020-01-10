@@ -43,7 +43,7 @@
       </div>
       <div class="bottom">
         <h2 class="bottom-text">
-          Conoce más sobre nuestras
+          Conocé más sobre nuestras
           <br />principales tecnologías
         </h2>
         <div class="bottom-technologies">
@@ -101,7 +101,7 @@
       </div>
       <div class="bottom">
         <h2 class="bottom-text">
-          Conoce más sobre nuestras
+          Conocé más sobre nuestras
           <br />principales tecnologías
         </h2>
         <div class="bottom-technologies">

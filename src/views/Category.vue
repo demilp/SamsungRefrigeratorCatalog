@@ -28,7 +28,7 @@
             />
           </div>
           <span class="product-model">{{product.fields.model}}</span>
-          <span class="product-capacity">{{product.fields.capacity}} Lts.</span>
+          <span class="product-capacity">{{product.fields.capacity}} {{refrigeratorStyles.indexOf($route.params.id) !== -1? "Lts.":"Kg."}}</span>
         </router-link>
       </slide>
     </carousel>

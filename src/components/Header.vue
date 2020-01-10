@@ -35,10 +35,10 @@ export default {
             break;
 
           case "frontload":
-            n.text = "CARGA SUPERIOR";
+            n.text = "CARGA FRONTAL";
             break;
           case "topload":
-            n.text = "CARGA FRONTAL";
+            n.text = "CARGA SUPERIOR";
             break;
           case "dryer":
             n.text = "SECARROPAS";

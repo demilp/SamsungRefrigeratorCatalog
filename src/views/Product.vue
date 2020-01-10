@@ -149,7 +149,6 @@ export default {
   },
   methods: {
     load: function() {
-      debugger
       this.product = this.$content.product.find(
         p => p.fields.model == this.$route.params.id
       );
@@ -461,11 +460,13 @@ export default {
   flex-direction: row;
   font-size: 1.5em;
   align-self: center;
+  white-space: nowrap;
 }
 .model-text {
   font-size: 2em;
   font-family: samsung-bold;
   color: #1b98ff;
+  white-space: nowrap;
 }
 .product-model {
   color: #0184ca;
